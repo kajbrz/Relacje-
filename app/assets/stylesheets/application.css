@@ -1,0 +1,142 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+
+/*
+Kolory których używamy
+#3E1C00 #DA8F00 #FFCB00 #FFDD00 #FFFF00
+
+#484646 #A2A2A2 #B44F51 #C9C9C9 #BCBAB6
+
+*/
+body{
+    background: white;
+    overflow: scroll;
+    overflow-x: hidden;
+    font-family:  "Georgia","Arial", Times, serif;
+}
+div.opis i{
+  display: block;
+  float: left;
+  width: 150px;
+}
+input.submit {
+  color: #BCBAB6;
+  background: #615720;  
+  border-radius: 20px;
+  //border: outset #C9C9C9;
+}
+
+div.opis b{
+  
+}
+
+div.opcje {
+  background-color: #E3C975;
+  width: 150px;
+  text-align: center;
+  display: block;
+  margin-left: 65%;
+  float: right;
+  text-align: right;
+  padding: 10px;  
+  border-radius: 20px;
+}
+label { 
+  float: left;
+  display: block;
+  width: 100px; 
+}
+div.wszystkie {
+  width: 1000px;
+  padding: 20px;
+  margin: auto;
+  background: ;
+  box-shadow: 10px 10px 5px #888888;
+  border-radius: 20px;
+  background: #BCBAB6 url("/assets/logo.png") no-repeat;
+  background-size: 25px;
+  background-position: 5px 5px ;
+}
+
+div.naglowek {
+  float: right;
+  margin-top: -50px;
+}
+
+table{
+  text-align: center;
+  width: 800px;
+}
+table tbody tr:nth-child(even) {
+	background: #C9C9C9;
+}
+table tbody tr:nth-child(odd) {
+	background: #A2A2A2;
+}
+table tbody tr:hover {
+	background: #B44F51;
+  color: black;
+}
+a { outline: 0; }
+a:link {color: #615720; text-decoration: none; background-color: transparent; font-style: italic;  }
+a:visited { color: #615720; text-decoration: none; background-color: transparent }
+a:hover { color: #615720; text-decoration: underline; background-color: transparent }
+a:active { color: #484646; text-decoration: underline; background-color: transparent } 
+
+
+div.tytul a.tytul{
+  font-size: 40px;
+  font-style: italic;
+  color: #615720; 
+  text-decoration: none; 
+}
+
+div.stopka {
+  text-align: center;  
+  padding-top: 40px;
+  margin-bottom: -20px;
+  font-size: 10px;
+  font-style: italic;
+}
+
+div.menu ul, ul li {
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+div.menu ul li {
+	float: left;
+}
+
+div.menu ul a:link, ul a:visited {
+	text-decoration: none;
+	display: block;
+	width: 112px;
+	text-align: center;
+	background-color: #C3AE4C;
+	color: #233;
+	border: 2px outset #A2A2A2;
+	padding: 5px;
+  border-radius: 15px;
+}
+
+div.menu ul a:hover {
+	border-style: inset;
+	padding: 7px 3px 3px 7px;
+}

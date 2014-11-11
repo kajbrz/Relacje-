@@ -1,0 +1,2 @@
+module SzafkiHelper
+end

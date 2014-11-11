@@ -1,0 +1,10 @@
+<%= form_for @przedmiot, url: przedmioty_edit_path(@przedmiot), method: :patch do |f|%>
+  <p><%= f.label :typ %> <%= f.text_field :typ %></p>
+  <p><%= f.label :nazwa %> <%= f.text_field :nazwa %></p>
+  <p><%= f.label :model %> <%= f.text_field :model %></p>
+  <p><%= f.label :stan %> <%= f.select :stan, @menu_stan %></p>
+  <p><%= f.label :uzytkownik %> <%= f.select :uzytkownicy_id, @menu_uzytkownicy %></p>
+  <p><%= f.label :projekt %> <%= f.select :projekty_id, @menu_projekty %></p>
+  <p><%= f.label :szafka %> <%= f.select :szafki_id, @menu_szafki %></p>
+  <%= f.submit :aktualizuj %> 
+<% end %>

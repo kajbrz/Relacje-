@@ -1,0 +1,4 @@
+
+<%= form_for :schowaj_do_szafki, url: projekty_schowaj_do_szafki_path do |f| %>
+  <%= f.select :szafka_id, Szafki.pluck(:nazwa) %>
+<% end %>

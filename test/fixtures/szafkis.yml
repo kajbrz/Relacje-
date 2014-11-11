@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rodzaj: MyString
+  miejsce: MyString
+  numer: 1
+  podnumer: 1
+
+two:
+  rodzaj: MyString
+  miejsce: MyString
+  numer: 1
+  podnumer: 1

@@ -1,0 +1,13 @@
+<h1> administracja </h1>
+<table>
+  <% @uzytkownicy.each do |u| %>
+  <tr>
+  <td> <%= u.nick %>
+  <td> <%= u.email %>
+  <td> <%= u.status_czlonka  %>
+  <td> <%= u.ostatnie_logowanie  %>
+  <td> <%= link_to 'Akceptuj', 'administruj.' + u.id.to_s, method: :post  %>
+  <td> <%= link_to 'Odrzuć', 'administruj.'+ u.id.to_s, method: :delete  %>
+  </tr>
+  <% end %>
+</table>

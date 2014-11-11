@@ -1,0 +1,10 @@
+<h1>Nowa szafka</h1>
+<%= form_for :szafki,url: szafki_create_path, method: :post do |f|%>
+  <p><%= f.label :miejsce%> <%= f.text_field :miejsce %></p>
+  <p><%= f.label :numer%> <%= f.text_field :numer %> </p>  
+  <p><%= f.label :uzytkownik %> <%= f.select :uzytkownicy_id, @menu_uzytkownicy %></p>
+  <p><%= f.label :komentarz%> <%= f.text_area :komentarz %> </p>
+  <%= f.submit :dodaj %> 
+<% end %>
+
+<%= link_to 'wroc', szafki_path%>

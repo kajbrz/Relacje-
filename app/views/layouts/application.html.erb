@@ -1,0 +1,67 @@
+
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.1//EN' 'http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='pl'>
+<head>
+  <%= favicon_link_tag "logo.ico" %>
+  <title>RelacjeDEV</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+</head>
+<body>
+<div class="wszystkie">
+ <div class="tytul" title="Kuzyn HAL'a"> <a href="/"  class="tytul" >Relacje </a></div>
+
+<div class="naglowek">
+  <% if @poziom_dostepu > -1 %>
+    <p> Witamy <b> <%= link_to Uzytkownicy.where(id: @uzytkownik_id).first.nick, controller: :uzytkownicy, action: :show, id: @uzytkownik_id %> 
+    <%= link_to :wyloguj, uzytkownicy_wyloguj_path %></b></p>
+    <%= link_to 'wybrane', przedmioty_path(wybrane: :true) %>
+    <% if session[:wybrane_przedmioty] %> <%= "(" + session[:wybrane_przedmioty].count.to_s + ")" %> <% end %>
+  <% else %>  
+    <p><b> <%= link_to :zaloguj, uzytkownicy_logowanie_path %></b>
+    <b> <%= link_to :zarejestruj, uzytkownicy_rejestracja_path %></b> 
+  <% end %>
+</div>
+
+
+<% if @poziom_dostepu > -1 %>
+  <div class="menu">
+    <ul>
+      <li><%= link_to 'przedmioty', przedmioty_path %>
+      <li><%= link_to 'szafki', szafki_path %>
+      <li><%= link_to 'projekty', projekty_path %>
+      <li><%= link_to 'użytkownicy', uzytkownicy_path %>
+      <% if @poziom_dostepu > 1 %>
+        <li><%= link_to 'administracja', administracja_path %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<br/>
+
+<p style="color: blue"><%= flash[:notice] %></p>
+<p style="color: red"><%= flash[:error] %></p>
+
+
+<div class="glowny">
+  <% if @poziom_dostepu == 0 %>
+    <p> Oczekujemy na odpowiedź administratora czy jesteś członkiem kola naukowego </p>
+  <% elsif @poziom_dostepu > 0 %>
+    <%= yield %>
+  <% else %>
+    <% if params[:action] == 'logowanie' || params[:action] == 'rejestracja' || params[:action] == 'odzyskaj_haslo' || params[:action] == 'zapomnialem' %>
+      <%= yield %>
+    <% else %>
+      <%= render template: 'uzytkownicy/logowanie' %>
+    <% end %>
+  <% end %>
+</div>
+<div class="stopka">
+  <p>&copy; by Kajetan Brzuszczak, dla Międzywydziałowego Koła Naukowego Synergia </p>
+</div>
+</div>
+
+</body>
+</html>

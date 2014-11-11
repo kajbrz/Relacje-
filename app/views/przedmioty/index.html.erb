@@ -1,0 +1,48 @@
+
+<h1>przedmioty </h1>
+<div class="opcje">
+  <%= link_to 'dodaj przedmiot', action: :new %><br/>
+  <% if params[:wybrane] %>
+    <%= link_to "wyczyść wybrane", przedmioty_wyczysc_path, method: :post %>
+    <% if @poziom_dostepu > 2 %>
+      <br/><%= link_to "usuń wybrane", przedmioty_destroy_all_path, method: :delete %>
+    <% end %>    
+  <% end %>
+</div>
+<%= form_tag :przedmioty_index, method: :get do %>
+  <%= text_field_tag :szukaj, "szukaj", onfocus: "if(this.value == 'szukaj') { this.value = ''; }"%>
+<% end %>
+<% if @przedmioty %>
+  <table>
+    <tr>
+      <td>id
+      <td>typ
+      <td>nazwa
+      <td>model
+      <td>stan
+    </tr>
+    <% @przedmioty.each do |u| %>
+      <tr>
+        <td><%= u.id %>
+        <td><%= u.typ %>
+        <td><%= u.nazwa %>
+        <td><%= u.model %>
+        <% if u.stan == 1 %>
+          <td title="zajęty"> Z
+        <% end %>
+        <% if u.stan == 2 %>
+          <td title="wypożyczalny"> W
+        <% end %>
+        <% if u.stan == 3 %>
+          <td title="do utylizacji"> U
+        <% end %>
+        <td><%= link_to 'zobacz', action: :show, id: u %>
+        <% unless (session[:wybrane_przedmioty].include? u.id  if session[:wybrane_przedmioty])%>
+          <td><%= link_to('wybierz', {action: :wybierz, id: u}, method: :post)%>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p> Brak Rekordów </p>
+<% end %>

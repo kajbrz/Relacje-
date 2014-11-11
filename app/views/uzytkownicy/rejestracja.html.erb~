@@ -1,0 +1,12 @@
+<h1>rejestracja</h1>
+<%= form_for :rejestracja, url: uzytkownicy_zarejestruj_path do |f| %>
+  <%= f.label :nick %>
+  <%= f.text_field :nick %> <br/>
+  <%= f.label :email %>
+  <%= f.text_field :email %> <br/>
+  <%= f.label :haslo %>
+  <%= f.password_field :haslo %> <br/>
+  <%= f.label 'Powtórz hasło' %>
+  <%= f.password_field :haslo2 %> <br/>
+  <%= f.submit :zarejestruj %>
+<% end %> 

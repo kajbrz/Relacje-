@@ -1,0 +1,76 @@
+<h1> szafka 
+<% uzytkownik = Uzytkownicy.where(id: @szafka.uzytkownicy_id).first%>
+<% if uzytkownik %> 
+  <%= link_to uzytkownik.nick,
+     controller: :uzytkownicy, action: :show, id: @szafka.uzytkownicy_id %></p></b>
+<% end %>
+</h1>
+<div class="opcje">
+  <br/><%= link_to 'wróć', szafki_path %>
+  <br/><%= link_to 'schowaj', {action: :schowaj, szafka_id: @szafka.id}, method: :post%>
+  <br/><%= link_to 'zwróć tutaj ', {action: :zwroc_przedmioty, szafka_id: @szafka.id}, method: :post%>
+  <br/><%= link_to 'edytuj', '/szafki/'+@szafka.id.to_s+'/edit' %>
+  <br/><%= link_to 'usuń', szafki_path(@szafka), method: :delete, data: {confirm: "Czy na pewno?"}%>
+</div>
+<div class="opis">
+  <p><i>miejsce</i> <b><%= @szafka.miejsce %></b></p>
+  <p><i>numer </i> <b><%= @szafka.numer %></b> </p> 
+  <p><i>komentarz</i>  <b><%= @szafka.komentarz %></b></p>
+</div>
+<br/>
+<% if @szafka.przedmioties.count > 0 %>
+  <div class="lista">
+    <small>
+      <p>Przedmioty w szafce:</p>
+      <table>
+        <tr>
+          <td>typ
+          <td>nazwa
+          <td>model
+        <tr>
+        <% @szafka.przedmioties.each do |p| %>  
+          <tr>
+            <td><%= p.typ %>
+            <td><%= p.nazwa %>
+            <td><%= p.model %>
+            <td><%= p.stan %>
+            <% unless (session[:wybrane_przedmioty].include? p.id  if session[:wybrane_przedmioty])%>
+              <td>
+                <%= link_to('wybierz', przedmioty_wybierz_path(p, {pathC: params[:controller], pathA: params[:action], pathI: params[:id] }), method: :post)%>
+              </td>
+            <% end %>
+          <tr>
+        <% end %>
+      </table>
+    </small>
+  </div>
+<% else %>
+  <small>pusta szafka </small>
+<% end %>
+
+<br/>
+<br/>
+<% if @szafka.projekties.size > 0%> 
+  <div class="lista">
+    <small>
+      <p>Projekty w szafce:</p>
+      <table>
+        <tr>
+          <td>id
+          <td>nazwa
+          <td>stan
+        <tr>
+        <% @szafka.projekties.each do |p| %>  
+          <tr>
+            <td><%= p.id %>
+            <td><%= p.nazwa %>
+            <td><%= p.stan %>
+            <td><%= link_to "Zobacz", projekty_show_path(id: p.id) %>
+          <tr>
+        <% end %>
+      </table>
+    </small>
+  </div>
+<% end %>
+
+

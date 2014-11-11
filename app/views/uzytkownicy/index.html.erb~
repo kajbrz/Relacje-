@@ -1,0 +1,13 @@
+<h1> użytkownicy </h1>
+<table  >
+  <% @uzytkownicy.each do |u| %>
+  <tr>
+  <td> <%= u.nick %>
+  <td> <%= u.email %>
+  <td> <%= u.status_czlonka  %>
+  <td> <%= u.ostatnie_logowanie  %>
+  <td> <%= link_to 'zobacz', uzytkownicy_path+ '/' + u.id.to_s%>
+  <td> <%= link_to 'usun', uzytkownicy_path(u), method: :delete%>
+  </tr>
+  <% end %>
+</table>

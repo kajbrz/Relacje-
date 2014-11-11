@@ -1,0 +1,11 @@
+<h1>logowanie</h1>
+<%= form_for :logowanie, url: uzytkownicy_zaloguj_path do |f| %>
+  <p> <%= f.label :email %>
+  <%= f.text_field :email %></p>
+  
+  <p><%= f.label "hasło" %>
+  <%= f.password_field :haslo %></p>
+  <%= f.submit :zaloguj, class: :submit%>
+<% end %>
+
+<%= link_to "Zapomniałem hasło", uzytkownicy_zapomnialem_path %>  

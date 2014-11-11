@@ -1,0 +1,7 @@
+
+<%= form_for :przedmiot, przedmioty_new_path do |f|%>
+  <% f.label :typ%> <% f.text_field :typ %>
+  <% f.label :nazwa%> <% f.text_field :nazwa %>
+  <% f.label :model%> <% f.text_field :model %>
+  <% f.label :stan%> <% f.select @menu_stan%>
+<% end %>

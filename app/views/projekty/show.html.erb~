@@ -1,0 +1,60 @@
+<h1>projekt <%= @projekt.nazwa %></h1>
+<div class="opcje">
+<%= link_to 'wróć', projekty_path %> <br/>    
+<% if @edycja %>
+  <%= link_to 'usuń'  , projekty_destroy_path(id: @projekt.id), method: :delete %> <br/>  
+  <%= link_to "edytuj", projekty_edit_path(id: @projekt.id), method: :get   %><br/>
+  <%= link_to "dodaj przedmioty", projekty_dodaj_przedmioty_path(id: @projekt.id), method: :post %>
+  <%= link_to "umieść w szafce", projekty_umiesc_w_szafce_path(id: @projekt.id), method: :post%>
+<% end %>
+<% if @projekt.szafki %>
+  <%= link_to "idź do szafki", szafki_show_path(id: @projekt.szafki.id) %>
+<% end %>
+
+</div>
+<p> stan <b> <%= @projekt.stan %> </b></p>
+<p> opis <i> <%= @projekt.opis %> </i></p>
+
+<p> Osoby biorace udzial: 
+<% if @edycja %>
+  <%= form_for :dodaj_uzytkownika, url: projekty_dodaj_uzytkownika_path, method: :post do |f| %>
+    <%= f.collection_select :uzytkownik_id, Uzytkownicy.all - @projekt.uzytkownicies, :id, :nick, prompt: true %>
+    <%= f.hidden_field :projekt_id, value: @projekt.id %>   
+    <%= f.submit :dodaj%>  
+  <% end %>
+<% end %>
+<div class="opis">
+<% @projekt.uzytkownicies.each do |p| %>
+  <br/>
+  <i>Nick <b><%= p.nick %></b></i>
+  Funkcja 
+    <% rola = @projekt.projekty_uzytkownicies.find_by(uzytkownicy_id: p).rola %>
+    <% if @edycja %>
+      <%= form_for :edytuj_role, url: projekty_edytuj_role_path do |f| %>
+        <%= f.text_field :rola, value: rola%>
+        <%= f.hidden_field :uzytkownik_id, value: p.id %>
+        <%= f.hidden_field :projekt_id, value: @projekt.id %>
+      <% end %>  
+    <% else %>
+      <%= rola %>
+    <% end %> 
+    <% if @edycja %>
+      <b><%= link_to "usun", 
+          projekty_usun_uzytkownika_path(projekt_id: @projekt.id, uzytkownik_id: p.id), method: :post %></b>
+    <% end %>
+  <br/>
+<% end %>
+</div>
+<br/>
+Przedmioty: 
+<table>
+<% @projekt.przedmioties.each do |p| %>
+  <tr>
+    <td><%= p.typ %>
+    <td><%= p.nazwa %>
+    <td><%= p.model %>
+    <td><%= p.stan %>
+    <td><%= link_to 'usuń', projekty_usun_przedmiot_path(id: p.id, projekt_id: @projekt.id), method: :post %>    
+  <tr>       
+<% end %>
+</table>

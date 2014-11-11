@@ -1,0 +1,9 @@
+<%= form_for :uzytkownik, url: @uzytkowik, method: :patch do |f| %>
+  <%= f.label :nick %>
+  <%= f.text_field :nick %> <br/>
+  <%= f.label 'status czlonka' %>
+  <%= f.text_field :status_czlonka %> <br/>
+  <%= f.label :komentarz %> <br/>
+  <%= f.text_area :komentarz %> <br/>
+  <%= f.submit :zapisz %>
+<% end %> 

@@ -1,0 +1,16 @@
+# encoding: UTF-8
+class ResetMail < ActionMailer::Base
+  default from: "synergia"
+  def reset(params)  
+    @user = params[:user]
+    user = @user.email    
+    puts "#"*1000
+    puts params[:user] 
+    puts "\n"
+    puts params[:link]
+    puts "\n"
+
+    puts mail(to: user, subject: '[Synergia][Relacje]Zmiana hasła', link: params[:link])
+    @link = params[:link]
+  end 
+end

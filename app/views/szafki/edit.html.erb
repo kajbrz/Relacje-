@@ -1,0 +1,9 @@
+<h1>edytuj szafkę <%= @szafka.id %> </h1>
+<%= form_for @szafka, url: szafki_edit_path(id: @szafka), method: :patch do |f|%>
+  <p><%= f.label :miejsce%> <%= f.text_field :miejsce %></p>
+  <p><%= f.label :numer%> <%= f.text_field :numer %> </p>
+  <p><%= f.label :komentarz%> <%= f.text_area :komentarz %> </p>
+  <%= f.submit :aktualizuj %> 
+<% end %>
+
+<%= link_to 'wroc', ('/szafki/' + @szafka.id.to_s)%>

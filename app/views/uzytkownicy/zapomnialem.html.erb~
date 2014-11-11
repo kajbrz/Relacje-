@@ -1,0 +1,5 @@
+<%= form_for :zapomnialem, url: uzytkownicy_zmien_haslo_path do |f| %>
+  <%= f.label :email %>
+  <%= f.text_field :email %></p>
+  <%= f.submit "wyslij", class: :submit%>
+<% end %>

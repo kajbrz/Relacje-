@@ -1,0 +1,32 @@
+class Sesja < ActiveRecord::Base
+
+  def self.utworz_sesje(uzytkownik_id, session_id)
+    self.where(klucz: session_id).delete_all
+    if self.create(klucz: session_id,uzytkownik_id: uzytkownik_id, utworzenie: Time.zone.now)
+      true
+    else
+      false
+    end
+  end
+  
+  def self.zakoncz_sesje(session_id)
+    self.where(klucz: session_id).first.delete   
+    self.where(uzytkownik_id: nil).delete_all 
+    
+    self.all.each {|s| s.delete if Time.zone.now - s.utworzenie > 10.minutes}
+  end
+
+  def self.sprawdz(session_id)
+    if sesja = self.where(klucz: session_id).first
+      if Time.zone.now - sesja.utworzenie < 10.minute
+        sesja.update_attributes(utworzenie: Time.zone.now)
+        sesja.uzytkownik_id
+      else
+        sesja.update_attributes(uzytkownik_id: false)
+        false
+      end
+    else
+      false
+    end
+  end
+end

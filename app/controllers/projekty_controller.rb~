@@ -1,0 +1,191 @@
+# encoding: UTF-8
+class ProjektyController < ApplicationController
+  
+  before_action :poziom1
+
+  def index
+    if params[:szukaj] 
+      @projekty = Projekty.where('nazwa LIKE ?', "%#{params[:szukaj]}").pluck(:id)
+      @projekty += Projekty.where('stan LIKE ?', "%#{params[:szukaj]}").pluck(:id)
+      #@projekty += Projekty.where('opis LIKE ?', "%#{params[:szukaj]}").pluck(:id)
+      #@projekty += Projekty.includes(params[:szukaj]).pluck(:id)
+      Projekty.all.each { |p| @projekty += [p.id.to_s] if p.opis.to_s.include? params[:szukaj].to_s }
+    
+      @projekty = Projekty.where(id: @projekty)
+    else
+      @projekty = Projekty.all
+    end  
+  end
+
+  def show
+    if @projekt = Projekty.where(id: params[:id]).first
+      if @projekt.uzytkownicies.where(id: @uzytkownik_id).first || @poziom_dostepu > 1
+        @edycja = true
+      end
+    else
+      flash[:error] = 'nie znaleziono rekordu'
+      redirect_to projekty_path
+    end
+  end
+
+  def edit
+    if @projekt = Projekty.where(id: params[:id]).first
+      if @projekt.uzytkownicies.where(id: @uzytkownik_id) || @poziom_dostepu > 1
+        
+      else
+        flash[:error] = "brak dostępu"         
+        redirect_to projekty_path(id: @projekt)
+      end
+    else
+      redirect_to projekty_path
+    end
+  end
+
+  def update
+    if @projekt = Projekty.where(id: params[:id]).first
+      if @projekt.uzytkownicies.where(id: @uzytkownik) || @poziom_dostepu > 2
+        if @projekt.update(params.require(:projekty).permit(:nazwa, :stan, :opis))
+        else
+          flash[:error] = @user.errors.messages
+          render action: :edit, id: @projekt.id and return
+        end
+      else
+        flash[:error] = "brak dostępu"        
+      end
+    else
+      flash[:error] = "nie ma takiego projektu"
+      redirect_to action: :index and return
+    end
+    redirect_to action: :show, id: @projekt.id
+  end
+
+  def create
+    if @uzytkownik = Uzytkownicy.where(id: params[:projekty][:uzytkownik_id]).first
+      unless @poziom_dostepu > 1
+        if @uzytkownik.id != @uzytkownik_id
+          flash[:error] = "tylko administrator ma prawo wyboru użytkownika"
+          redirect_to projekty_path and return
+        end
+      end
+      @uzytkownik.projekties.create(params.require(:projekty).permit(:nazwa, :opis, :stan))
+      flash[:notice] = "stworzono projekt"
+    else
+      flash[:error] = "nie znaleziono użytkownika"
+    end
+    redirect_to projekty_path
+  end
+
+  def destroy
+    if @projekt = Projekty.where(id: params[:id]).first
+      if ((@projekt.uzytkownicies.where(id: @uzytkownik_id)) || (@poziom_dostepu > 1 ))
+        @projekt.delete
+        flash[:notice] = "pomyślnie usunięto"
+      else
+        flash[:error] = "brak dostępu do operacji"
+      end    
+    else
+      flash[:error] = "nie znaleziono projektu"
+    end
+    redirect_to action: :index
+  end
+
+  def dodaj_uzytkownika
+    if @projekt = Projekty.where(id: params[:dodaj_uzytkownika][:projekt_id]).first
+      if @uzytkownik = Uzytkownicy.where(id: params[:dodaj_uzytkownika][:uzytkownik_id]).first
+        if ((@poziom_dostepu > 1) || ( @projekt.uzytkownicies.include? Uzytkownicy.where(id: @uzytkownik_id).first)) 
+          @projekt.uzytkownicies << @uzytkownik 
+          flash[:notice] = "dodano użytkownika " + @uzytkownik.nick + " do projektu "+ @projekt.nazwa
+        else
+          flash[:error] = "nie masz dostępu do tej operacji"          
+        end
+      else
+        flash[:error] = "nie znaleziono użytkownika"
+      end
+    else
+      flash[:error] = "nie znaleziono projektu"
+    end
+    redirect_to action: :show, id: params[:dodaj_uzytkownika][:projekt_id]
+  end
+  
+  def usun_uzytkownika
+    if @projekt = Projekty.where(id: params[:projekt_id]).first
+      if @uzytkownik = Uzytkownicy.where(id: params[:uzytkownik_id]).first
+        if ((@poziom_dostepu > 1) || ( @projekt.uzytkownicies.include? Uzytkownicy.where(id: @uzytkownik_id).first)) 
+          @projekt.uzytkownicies.delete(@uzytkownik)
+          flash[:notice] = "usunięto użytkownika" + @uzytkownik.nick + ' z projektu '+ @projekt.nazwa
+        else
+          flash[:error] = "nie masz dostępu do tej operacji"          
+        end
+      else
+        flash[:error] = "nie znaleziono użytkownika"
+      end
+    else
+      flash[:error] = "nie znaleziono projektu"
+    end
+    redirect_to action: :show, id: params[:projekt_id]
+  end
+  def edytuj_role
+    if @projekt = Projekty.where(id: params[:edytuj_role][:projekt_id]).first
+      if @uzytkownik = Uzytkownicy.where(id: params[:edytuj_role][:uzytkownik_id]).first
+        if ((@poziom_dostepu > 1) || ( @projekt.uzytkownicies.include? Uzytkownicy.where(id: @uzytkownik_id).first)) 
+        ProjektyUzytkownicy.where(uzytkownicy_id: @uzytkownik, projekty_id: @projekt).update_all(rola: params[:edytuj_role][:rola])
+        flash[:notice] = "zmieniono funkcje " + @uzytkownik.nick + ' w projekcie '+ @projekt.nazwa
+        else
+          flash[:error] = "nie masz dostępu do tej operacji"          
+        end
+      else
+        flash[:error] = "nie znaleziono użytkownika"
+      end
+    else
+      flash[:error] = "nie znaleziono projektu"
+    end  
+    redirect_to action: :show, id: params[:edytuj_role][:projekt_id]
+  end
+
+  def dodaj_przedmioty
+    if @projekt = Projekty.where(id: params[:id]).first
+      if (session[:wybrane_przedmioty] && (session[:wybrane_przedmioty].size > 0))
+        if poziom_dostepu > 1 || @projekt.uzytkownicies.where(@uzytkownik_id)
+          if @przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty], projekty_id: 0)                 
+            @projekt.przedmioties << @przedmioty          
+            session[:wybrane_przedmioty] = nil
+            flash[:notice] = "dodano przedmioty do projektu"
+          else
+            flash[:error] = 'nie mozna bylo dodac zadnych przedmiotow'             
+          end          
+        else
+          flash[:error] = 'nie masz prawa do tej operacji' 
+        end
+      else
+        flash[:error] = 'nie zaznaczyłeś żadnych przedmiotow' 
+      end
+    else
+      flash[:error] = "nie znaleziono projektu"
+    end
+    redirect_to action: :show, id: @projekt.id
+  end
+
+  def usun_przedmiot
+    if @projekt = Projekty.where(id: params[:projekt_id]).first
+      if @projekt.uzytkownicies.where(id: @uzytkownik_id).first || poziom_dostepu > 1
+        if @przedmiot = @projekt.przedmioties.where(id: params[:id]).first
+          @przedmiot.update(projekty_id: 0)
+        else
+          flash[:error] = 'nie znaleziono przedmiotu'
+        end
+      else
+        flash[:error] = 'nie masz odpowiednich uprawnień'
+      end
+    else
+      flash[:error] = 'nie znaleziono projektu'   
+    end
+    redirect_to action: :show, id: params[:projekt_id]
+  end
+
+private   
+  def poziom1
+    wejscie(1, root_path)
+  end
+
+
+end

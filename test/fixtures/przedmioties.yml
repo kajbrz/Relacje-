@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  typ: MyString
+  nazwa: MyString
+  model: MyString
+  stan: 1
+  data_utworzenia: 2014-09-04 03:00:31
+  uzytkownicies_id: 1
+  szafkis_id: 1
+  projekties_id: 1
+
+two:
+  typ: MyString
+  nazwa: MyString
+  model: MyString
+  stan: 1
+  data_utworzenia: 2014-09-04 03:00:31
+  uzytkownicies_id: 1
+  szafkis_id: 1
+  projekties_id: 1

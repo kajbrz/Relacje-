@@ -1,0 +1,2 @@
+module ProjektyHelper
+end
