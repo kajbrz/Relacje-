@@ -104,7 +104,9 @@ class UzytkownicyController < ApplicationController
   def administruj
     if @uzytkownik = Uzytkownicy.where(id: params[:id]).first
       if @uzytkownik.poziom_dostepu == 0 
-        @uzytkownik.update(poziom_dostepu: 1)
+        @uzytkownik.utworz_szafke()
+        @uzytkownik.poziom_dostepu = 1
+        @uzytkownik.save()
         flash[:notice] = "zaakceptowano uzytkownika"       
       else
         flash[:error] = "ten uzytkownik zostal juz zaakceptowany"
@@ -165,12 +167,13 @@ class UzytkownicyController < ApplicationController
 
   def zmien_haslo 
     if @uzytkownik = Uzytkownicy.where(email: params[:zapomnialem][:email]).first
-      @link = request.protocol + request.host + ":" + request.port.to_s + "/odzyskaj_haslo/" + Uzytkownicy.last.id.to_s + '/' + Uzytkownicy.last.haslo_salt
+      @link = request.protocol + request.host + ":" + request.port.to_s + "/odzyskaj_haslo/" + @uzytkownik.id.to_s + '/' + @uzytkownik.haslo_salt
+      
+      parametry = Hash.new
+      parametry[:id] = @uzytkownik.id
+      parametry[:link] = @link
 
-   
-      params[id: @uzytkownik.id]
-      params[link: @link]
-      if resetuj_haslo(params)
+      if resetuj_haslo(parametry)
         flash[:notice] = "na podany email wysłano link ze zmianą hasła"   
       else
         flash[:error] = "błąd wysyłania emaila"
@@ -194,8 +197,10 @@ class UzytkownicyController < ApplicationController
   end
 
   
-  def resetuj_haslo(params)
-      if @uzytkownik = Uzytkownicy.where(id: params[:id]).first  
+  def resetuj_haslo(params={})
+      
+      if @uzytkownik = Uzytkownicy.where(id: params[:id]).first         
+        
         params[:user] = @uzytkownik
         if error = ResetMail.reset(params).deliver
           return true
@@ -203,7 +208,7 @@ class UzytkownicyController < ApplicationController
 
         end
       else
-
+        puts "#"*3000 + "\nCHUUUUUJ" + params[:id] + " " + params[:link]
       end
 
       return false

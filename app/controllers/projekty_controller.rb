@@ -181,6 +181,12 @@ class ProjektyController < ApplicationController
     redirect_to action: :show, id: params[:projekt_id]
   end
 
+  def umiesc_w_szafce
+  
+    @tab = Szafki.all.pluck(:miejsce).zip(Szafki.all.pluck(:id))
+    @tab.each {|f| f[0] += " " + f[1].to_s}
+  end
+
 private   
   def poziom1
     wejscie(1, root_path)

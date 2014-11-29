@@ -1,0 +1,23 @@
+From eafec3d893ad77d50d4ff57877f6a6f93d9f50e0 Mon Sep 17 00:00:00 2001
+From: kajbrz <kajbrz@gmail.com>
+Date: Tue, 11 Nov 2014 11:49:18 +0100
+Subject: [PATCH] Dodanie projekty dla MKNS
+
+---
+ README.MD | 4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 README.MD
+
+diff --git a/README.MD b/README.MD
+new file mode 100644
+index 0000000..f2409e0
+--- /dev/null
++++ b/README.MD
+@@ -0,0 +1,4 @@
++Projekt tworzony dla Międzywydziałowego Koła Naukowego Synergia
++
++Ma na celu posegregowanie i zinwentaryzowanie instniejących projektów, urządzeń i podzespołów, oraz
++oraz wprowadza prosty system wypożyczeń.
+-- 
+1.9.1
+

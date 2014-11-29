@@ -1,4 +1,8 @@
+<h1> 
+  <%= projekty.where(params[:id]).first.nazwa %>
+</h1>
 
 <%= form_for :schowaj_do_szafki, url: projekty_schowaj_do_szafki_path do |f| %>
-  <%= f.select :szafka_id, Szafki.pluck(:nazwa) %>
+  <%= f.select :szafka_id, @tab %>
+  <%= f.submit 'umieść' %>
 <% end %>

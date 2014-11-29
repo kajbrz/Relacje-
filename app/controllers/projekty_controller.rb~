@@ -1,6 +1,5 @@
 # encoding: UTF-8
-class ProjektyController < ApplicationController
-  
+class ProjektyController < ApplicationController  
   before_action :poziom1
 
   def index
@@ -180,6 +179,11 @@ class ProjektyController < ApplicationController
       flash[:error] = 'nie znaleziono projektu'   
     end
     redirect_to action: :show, id: params[:projekt_id]
+  end
+
+  def umiesc_w_szafce
+    @tab = Szafki.all.pluck(:miejsce).zip(Szafki.all.pluck(:id))
+    @tab.each {|f| f[0] += " " + f[1].to_s}
   end
 
 private   

@@ -1,6 +1,9 @@
 <h1> przedmiot </h1>
 <div class="opcje">
   <%= link_to 'edytuj', @przedmiot.id.to_s + '/edit' %><br/>
+  <% if @przedmiot.szafki %>
+    <%= link_to 'idź do szafki', szafki_show_path(id: @przedmiot.szafki.id) %><br/>
+  <% end %>
   <%= link_to 'usun', przedmioty_path(@przedmiot), method: :delete, data: {confirm: "Na pewno?"} %>
 </div>
 

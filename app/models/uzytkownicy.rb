@@ -25,7 +25,6 @@ class Uzytkownicy < ActiveRecord::Base
     puts "#" * 1000
   end  
 
-  after_create :utworz_szafke
   def utworz_szafke
     @szafka = Szafki.create!(
       miejsce: 'dom',
