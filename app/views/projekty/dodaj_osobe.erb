@@ -1,0 +1,15 @@
+<h1>Dodaj osobę do projektu <%= @projekt.nazwa %></h1>
+
+<% if @lista.size < 1 %>
+  <p>Brak osób do wybrania</p>
+<% else %>
+<table>
+    <% @lista.each do |p| %>
+      </tr>
+        <td><%= p.nick %> 
+        <td><%= p.email %>
+        <td><%= link_to 'dodaj go', projekty_dodaj_uzytkownika_path(uzytkownik_id: p.id, projekt_id: @projekt.id), method: :post %>
+      </tr>
+    <% end %>
+</table>
+<% end %>

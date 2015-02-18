@@ -1,0 +1,33 @@
+
+////PRZEDMIOTY
+2|elektronika| dla wszystkich| 23123sda|0|1|1|1|  
+4|dasd|dasdas|asdas|1|0|0|0|   
+6|dasd|dasdas|asdas|1|0|0|0|   
+7|dasd|dasdas|asdas|1|1|4|0|   
+8|dasd|dasdas|asdas|1|0|0|0|   
+9|dasd|dasdas|asdas|1|0|0|0|   
+10|dasd|dasdas|asdas|1|0|0|0|   
+11|dasd|dasdas|asdas|1|1|4|0|   
+12|dasd|dasdas|asdas|1|0|0|0|   
+13|dasd|dasdas|asdas|1|0|0|0|   
+14|dasd|dasdas|asdas|1|0|0|0|   
+15|dasd|dasdas|asdas|1|0|0|0|   
+16|dasd|dasdas|asdas|1|0|0|0|   
+17|dasd|dasdas|asdas|1|0|0|0|   
+18|dasd|dasdas|asdas|1|1|4|0|   
+19|dasd|dasdas|asdas|1|0|0|0|   
+20|dasd|dasdas|asdas|1|0|0|0|   
+21|dasd|dasdas|asdas|1|0|0|0|   
+22|dasd|dasdas|asdas|1|0|0|0|   
+////UZYTKOWNICY
+1|Synergia|synergia@synergia.pl|$2a$10$5vcnvI1maZeVdtBVAbueR.Chd.wqGdUrTLLyVhkwIB6uwPK/9sxy2|$2a$10$5vcnvI1maZeVdtBVAbueR.||SuperAdministrator|3| 
+2|Michal|kajbrz@gmail.com|$2a$10$LOvSBArU3FgnKV5Tp1H5ae1krTqfG.h7bhrV589wiDK.At4zIPq4O|$2a$10$LOvSBArU3FgnKV5Tp1H5ae||rekrut|2|  
+3|MICHAL|kajbrz@hotmail.com|$2a$10$YCOO6ZguXOc341eUatHuROzSC9McLoEtDON7H1cS6IcwOcM8Qy/Lm|$2a$10$YCOO6ZguXOc341eUatHuRO||rekrut|0|  
+////PROJEKTY
+////PROJEKTY_UZYTKOWNICY
+2|1|nieustalono 
+////SZAFKI
+1|nieznane|0|0|
+3|dom|0|2|
+4|Kolo komputera|5|1|Jakis komentarz 
+5|dom|0|3|

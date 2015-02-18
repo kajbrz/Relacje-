@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20140904202119) do
     t.integer  "stan"
     t.integer  "uzytkownicy_id"
     t.integer  "szafki_id"
+    t.integer  "szafka_pierwotna"
     t.integer  "projekty_id"
     t.text     "komentarz"
     t.datetime "created_at"

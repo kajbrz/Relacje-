@@ -1,9 +1,13 @@
+<br/>
+<h1><%= @uzytkownik.nick %> </h1>
 <%= form_for :uzytkownik, url: @uzytkowik, method: :patch do |f| %>
   <%= f.label :nick %>
-  <%= f.text_field :nick %> <br/>
+  <%= f.text_field :nick %> <br/><br/>
   <%= f.label 'status czlonka' %>
-  <%= f.text_field :status_czlonka %> <br/>
-  <%= f.label :komentarz %> <br/>
-  <%= f.text_area :komentarz %> <br/>
+  <%= f.text_field :status_czlonka %> <br/>  <br/>
+  <%= f.label :poziom_dostepu %> 
+  <%= f.text_field :poziom_dostepu %> <br/><br/>
+  <%= f.label :komentarz %> 
+  <%= f.text_area :komentarz %> <br/><br/>
   <%= f.submit :zapisz %>
 <% end %> 

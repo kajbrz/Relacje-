@@ -2,7 +2,7 @@
 <%= form_for :projekty,url: projekty_create_path do |f| %>
   <p><%= f.label :nazwa %> <%= f.text_field :nazwa %>
   <p><%= f.label :stan %> <%= f.text_field :stan %>
-  <p><%= f.label :opis %> <%= f.text_field :opis %>
+  <p><%= f.label :opis %> <%= f.text_area :opis %>
   <% if @poziom_dostepu > 1%>
     <p><%= f.label :uzytkownik %> 
         <%= f.collection_select :uzytkownik_id, Uzytkownicy.all, :id, :nick, prompt: false%>

@@ -1,0 +1,20 @@
+<h1>Dostępne projekty</h1>
+
+<% if @lista.size < 1 %>
+	<p> brak projektow </p>
+<% else %>
+	<table>
+	  <% @lista.each do |p| %>
+	    <tr>
+	      <td><%= p.nazwa %>
+	      <td><%= p.stan %>
+	      <% if p.opis.length > 30 %>
+	        <td><%= p.opis[0..27] + "..." %>
+	      <% else %>      
+	        <td><%= p.opis%>
+	      <% end %>
+	      <td><%= link_to "wybierz", przedmioty_dodaj_do_projektu_A_path(id: p.id), method: :post%>
+	    <tr> 
+	  <% end %>
+	</table>
+<% end %>

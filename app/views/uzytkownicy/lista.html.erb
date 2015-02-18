@@ -1,0 +1,29 @@
+<h1> administracja </h1>
+<div class="opcje">
+  <%= link_to "powrót", uzytkownicy_lista_path(link: @linkpowrot.to_s), method: :post %> <br />
+</div>
+<br/>
+<div class="tabela" style="height: <%=@listaFP.size*30%>px ">
+  <% @listaFP.each do |plik| %>
+    <div class="folder">
+      <div class="foto">
+        <% if Pathname.new(plik).extname == "" %> 
+          <%= link_to uzytkownicy_lista_path(link: plik), method: :post do %>   
+            <img src="/assets/folder.png" />
+         <% end %>
+        <% else %>    
+          <%= link_to uzytkownicy_pobierz_path(link: plik), method: :post do %>
+            <img src="/assets/tekst.png" />
+          <% end %>
+        <% end %>
+      </div>
+      <div class="tekst">
+        <%= Pathname.new(plik.to_s).basename %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+<br />
+<br />

@@ -1,4 +1,17 @@
-
-<%= form_for :schowaj_do_szafki, url: projekty_schowaj_do_szafki_path do |f| %>
-  <%= f.select :szafka_id, Szafki.pluck(:nazwa) %>
-<% end %>
+<h1>Umieść projekt w szafce </h1>
+<table>
+  <% @lista.each do |s| %>
+    <tr>
+      <td> <%= s.id %>
+      <% if s.uzytkownicy_id > 0 %>
+        <% u = s.uzytkownicy_id %>
+        <td><% u = Uzytkownicy.where(id: u).first %> <%= link_to u.nick, 'uzytkownicy/' + u.id.to_s if u!=nil%>
+      <% else %>
+        <td> <%= s.miejsce %>
+      <% end %>
+      <td> <%= s.numer %>
+      <td> <%=   s.projekties.count.to_s + '+' +s.przedmioties.count.to_s %>
+      <td> <%= link_to 'schowaj',  projekty_schowaj_do_szafki_path(projekt_id: @projekt_id, szafka_id: s.id), method: :post %>
+    </tr>
+  <% end %>
+</table>

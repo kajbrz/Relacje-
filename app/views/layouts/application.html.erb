@@ -40,9 +40,10 @@
   </div>
 <% end %>
 <br/>
-
-<p style="color: blue"><%= flash[:notice] %></p>
-<p style="color: red"><%= flash[:error] %></p>
+<% if (flash[:notice] != nil) || (flash[:error] != nil ) %>
+  <p style="color: blue"><%= flash[:notice] %></p>
+  <p style="color: red"><%= flash[:error] %></p>
+<% end %>
 
 
 <div class="glowny">

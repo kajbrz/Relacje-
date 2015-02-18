@@ -2,6 +2,6 @@
 <%= form_for @projekt, url: projekty_edit_path(id: @projekt.id), method: :patch do |f| %>
   <p><%= f.label :nazwa %> <%= f.text_field :nazwa %> </p>
   <p><%= f.label :stan %> <%= f.text_field :stan %></p>
-  <p><%= f.label :opis %> <%= f.text_field :opis %></p>
+  <p><%= f.label :opis %> <%= f.text_area :opis %></p>
   <%= f.submit :edytuj %>
 <% end %>

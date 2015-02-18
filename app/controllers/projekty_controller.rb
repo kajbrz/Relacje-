@@ -89,21 +89,41 @@ class ProjektyController < ApplicationController
   end
 
   def dodaj_uzytkownika
-    if @projekt = Projekty.where(id: params[:dodaj_uzytkownika][:projekt_id]).first
-      if @uzytkownik = Uzytkownicy.where(id: params[:dodaj_uzytkownika][:uzytkownik_id]).first
-        if ((@poziom_dostepu > 1) || ( @projekt.uzytkownicies.include? Uzytkownicy.where(id: @uzytkownik_id).first)) 
-          @projekt.uzytkownicies << @uzytkownik 
-          flash[:notice] = "dodano użytkownika " + @uzytkownik.nick + " do projektu "+ @projekt.nazwa
-        else
-          flash[:error] = "nie masz dostępu do tej operacji"          
-        end
-      else
-        flash[:error] = "nie znaleziono użytkownika"
+
+    blad = false
+    unless @uzytkownik = Uzytkownicy.where(id: @uzytkownik_id).first
+      blad = true
+      flash[:error] = "nie znaleziono uzytkownika"
+    end
+    if @poziom_dostepu > 2
+      unless @projekt = Projekty.where(id: params[:projekt_id]).first
+        blad = true
+        flash[:error] = "nie znaleziono projektu"
       end
     else
-      flash[:error] = "nie znaleziono projektu"
+      unless @projekt = @uzytkownik.projekties.where(id: params[:projekt_id]).first
+        blad = true
+        flash[:error] = "nie znaleziono projektu, lub nie należysz do projektu"
+      end
     end
-    redirect_to action: :show, id: params[:dodaj_uzytkownika][:projekt_id]
+
+    unless @uzytkownik_do_dodania = Uzytkownicy.where(id: params[:uzytkownik_id]).first
+      blad = true
+      flash[:error] = "nie znaleziono uzytkownika"
+    end
+
+    if @projekt.uzytkownicies.where(id: @uzytkownik_do_dodania.id).first
+      blad = true      
+      flash[:notice] = "ten użytkownik już należy do projektu" 
+    end 
+
+    unless blad      
+      @projekt.uzytkownicies << @uzytkownik_do_dodania
+      flash[:notice] = "dodano uzytkownika"     
+      redirect_to projekty_show_path(id: @projekt.id) and return
+    else
+      redirect_to projekty_path
+    end
   end
   
   def usun_uzytkownika
@@ -123,64 +143,154 @@ class ProjektyController < ApplicationController
     end
     redirect_to action: :show, id: params[:projekt_id]
   end
+
   def edytuj_role
-    if @projekt = Projekty.where(id: params[:edytuj_role][:projekt_id]).first
-      if @uzytkownik = Uzytkownicy.where(id: params[:edytuj_role][:uzytkownik_id]).first
-        if ((@poziom_dostepu > 1) || ( @projekt.uzytkownicies.include? Uzytkownicy.where(id: @uzytkownik_id).first)) 
-        ProjektyUzytkownicy.where(uzytkownicy_id: @uzytkownik, projekty_id: @projekt).update_all(rola: params[:edytuj_role][:rola])
-        flash[:notice] = "zmieniono funkcje " + @uzytkownik.nick + ' w projekcie '+ @projekt.nazwa
-        else
-          flash[:error] = "nie masz dostępu do tej operacji"          
-        end
-      else
-        flash[:error] = "nie znaleziono użytkownika"
-      end
-    else
-      flash[:error] = "nie znaleziono projektu"
-    end  
-    redirect_to action: :show, id: params[:edytuj_role][:projekt_id]
+  
+    blad = false
+
+    unless @uzytkownik = Uzytkownicy.where(id: @uzytkownik_id).first
+      blad = true
+      flash[:error] = "brak takiego uzytkownika"
+    end
+
+    unless @uzytkownik_rola = Uzytkownicy.where(id: params[:uzytkownik_id]).first
+      blad = true
+      flash[:error] = "brak takiego uzytkownika"
+    end
+
+    unless @projekt = Projekty.where(id: params[:projekt_id]).first
+      blad = true
+      flash[:error] = "brak takiego projektu"
+    end
+
+    unless @uzytkownik.projekties.where(id: @projekt.id).first || @poziom_dostepu > 2
+      blad = true
+      flash[:error] = "nie masz uprawnien do zmian w tym projekcie"
+    end
+
+    unless (@pr = ProjektyUzytkownicy.where(uzytkownicy_id: @uzytkownik_rola, projekty_id: @projekt.id)).size > 0
+      blad = true
+      flash[:error] = "wybrany użytkownik nie należy do projektu"
+    end
+
+
+    unless blad
+      @pr.update_all(rola: params[:rola])
+      flash[:notice] = "pomyślnie zmieniono rolę w projekcie"
+      redirect_to projekty_show_path(id: @projekt.id) and return
+    end
+    redirect_to projekty_path
   end
 
-  def dodaj_przedmioty
-    if @projekt = Projekty.where(id: params[:id]).first
-      if (session[:wybrane_przedmioty] && (session[:wybrane_przedmioty].size > 0))
-        if poziom_dostepu > 1 || @projekt.uzytkownicies.where(@uzytkownik_id)
-          if @przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty], projekty_id: 0)                 
-            @projekt.przedmioties << @przedmioty          
-            session[:wybrane_przedmioty] = nil
-            flash[:notice] = "dodano przedmioty do projektu"
-          else
-            flash[:error] = 'nie mozna bylo dodac zadnych przedmiotow'             
-          end          
-        else
-          flash[:error] = 'nie masz prawa do tej operacji' 
-        end
-      else
-        flash[:error] = 'nie zaznaczyłeś żadnych przedmiotow' 
-      end
-    else
-      flash[:error] = "nie znaleziono projektu"
+  def zmien_role
+    blad = false
+
+    unless @projekt = Projekty.where(id: params[:projekt_id]).first
+      blad = true
     end
-    redirect_to action: :show, id: @projekt.id
+
+    unless @uzytkownik = Uzytkownicy.where(id: params[:uzytkownik_id]).first
+      blad = true
+    end
+
+    if blad
+      redirect_to projekty_path and return
+    end
   end
 
   def usun_przedmiot
-    if @projekt = Projekty.where(id: params[:projekt_id]).first
-      if @projekt.uzytkownicies.where(id: @uzytkownik_id).first || poziom_dostepu > 1
-        if @przedmiot = @projekt.przedmioties.where(id: params[:id]).first
-          @przedmiot.update(projekty_id: 0)
-        else
-          flash[:error] = 'nie znaleziono przedmiotu'
-        end
-      else
-        flash[:error] = 'nie masz odpowiednich uprawnień'
-      end
-    else
-      flash[:error] = 'nie znaleziono projektu'   
+    blad = false
+    if (@przedmiot = Przedmioty.where(id: params[:id]).first) == nil
+      flash[:error] = "brak przedmiotów"
+      blad = true
     end
-    redirect_to action: :show, id: params[:projekt_id]
+
+    if (@projekt = Projekty.where(id: params[:projekt_id]).first) == nil
+      flash[:error] = "brak projektu"
+      blad = true
+    end
+
+    if (@uzytkownik = Uzytkownicy.where(id: @uzytkownik_id).first.projekties.where(id: @projekt.id)) == nil
+      flash[:error] = "nie należysz do projektu"
+      blad = true
+    end
+
+
+    if (@projekt.przedmioties.where(id: @przedmiot.id)).size < 1      
+      flash[:error] = "brak przedmiotów"
+      blad = true
+    end
+
+    unless blad
+      flash[:notice] = "zwrócono przedmiot"
+      @przedmiot.projekty_id = 0
+      @przedmiot.szafki_id = @przedmiot.szafka_pierwotna
+      @przedmiot.save
+    end
+    redirect_to projekty_show_path(id: @projekt.id)
   end
 
+  def umiesc_w_szafce
+    @projekt_id = params[:id]
+
+    if @poziom_dostepu > 2
+      @lista = Szafki.all
+    else
+      @lista = Szafki.where(uzytkownicy_id: [0, @uzytkownik_id])
+    end
+  end
+
+  def schowaj_do_szafki
+    blad = false
+
+    unless @uzytkownik = Uzytkownicy.where(id: @uzytkownik_id).first
+      blad = true
+    end
+
+    unless @projekt = @uzytkownik.projekties.where(id: params[:projekt_id]).first
+      blad = true
+
+    end
+
+    unless @szafka = Szafki.where(uzytkownicy_id: [0, @uzytkownik_id]).where(id: params[:szafka_id]).first
+      flash[:error] = "nie możesz skorzystać z tej szafki"
+      blad = true
+    end
+
+    unless blad
+      flash[:notice] = "umieszczono w szafce"
+      @projekt.szafki_id = @szafka.id
+      @projekt.save
+    end
+
+    redirect_to projekty_show_path(id: params[:projekt_id])
+  end
+
+  def dodaj_osobe
+    blad = false
+
+    unless @projekt = Projekty.where(id: params[:id]).first
+      flash[:error] = "nie znaleziono projektu"
+      blad = true
+    end
+
+    unless @uzytkownik = Uzytkownicy.where(id: @uzytkownik_id).first
+      flash[:error] = "nie znaleziono uzytkownika"
+      blad = true
+    end
+
+
+    unless @uzytkownik.projekties.where(id: @projekt.id).first || @poziom_dostepu > 2
+        flash[:error] = "nie należysz do tego projektu"
+        blad = true
+    end
+
+    unless blad
+      @lista = Uzytkownicy.all
+    else    
+        redirect_to projekty_show_path(id: @projekt.id) and return
+    end
+  end
 private   
   def poziom1
     wejscie(1, root_path)

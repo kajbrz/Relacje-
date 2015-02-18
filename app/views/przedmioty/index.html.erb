@@ -6,7 +6,11 @@
     <%= link_to "wyczyść wybrane", przedmioty_wyczysc_path, method: :post %>
     <% if @poziom_dostepu > 2 %>
       <br/><%= link_to "usuń wybrane", przedmioty_destroy_all_path, method: :delete %>
-    <% end %>    
+    <% end %>  
+    <br/>
+    <%= link_to "Dodaj do projektu", przedmioty_dodaj_do_projektu_path, method: :post %> <br/>
+    <%= link_to "Wypożycz", przedmioty_wypozycz_path, method: :post %><br/>
+    <%= link_to "Zaszufladkuj", przedmioty_schowaj_path, method: :post %>
   <% end %>
 </div>
 <%= form_tag :przedmioty_index, method: :get do %>
@@ -27,13 +31,14 @@
         <td><%= u.typ %>
         <td><%= u.nazwa %>
         <td><%= u.model %>
-        <% if u.stan == 1 %>
+        <% if u.stan == 0 || u.stan == 1 %>
           <td title="zajęty"> Z
-        <% end %>
-        <% if u.stan == 2 %>
+        <% elsif u.stan == 2 %>
           <td title="wypożyczalny"> W
-        <% end %>
-        <% if u.stan == 3 %>
+          <% if u.uzytkownicy || u.projekty %>
+            (z)
+          <% end %>
+        <% elsif u.stan == 3 %>
           <td title="do utylizacji"> U
         <% end %>
         <td><%= link_to 'zobacz', action: :show, id: u %>

@@ -8,6 +8,18 @@ class Przedmioty < ActiveRecord::Base
   belongs_to :szafki
   belongs_to :uzytkownicy
   belongs_to :projekty  
+
+  before_create :ustaw_w_szafce
+  before_update :ustaw_w_szafce
+  before_save 	:ustaw_w_szafce
+  def ustaw_w_szafce
+    if (self.szafki_id == 0) || (self.szafki_id == nil)
+      self.szafki_id = 1
+    end
+    if (self.szafka_pierwotna == nil)
+      self.szafka_pierwotna = 1
+    end
+  end
   
  
 end

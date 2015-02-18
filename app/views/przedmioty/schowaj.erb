@@ -1,0 +1,24 @@
+<h1>Dostępne szafki</h1>
+
+<table>
+  <tr>
+    <td> id
+    <td> miejsce
+    <td> numer
+    <td> schowano
+  </tr>
+  <% @lista.each do |s| %>
+    <tr>
+      <td> <%= s.id %>
+      <% if s.uzytkownicy_id > 0 %>
+        <% u = s.uzytkownicy_id %>
+        <td><% u = Uzytkownicy.where(id: u).first %> <%= link_to u.nick, 'uzytkownicy/' + u.id.to_s if u!=nil%>
+      <% else %>
+        <td> <%= s.miejsce %>
+      <% end %>
+      <td> <%= s.numer %>
+      <td> <%=   s.projekties.count.to_s + '+' +s.przedmioties.count.to_s %>
+      <td> <%= link_to 'schowaj tu', przedmioty_schowaj_A_path(id: s.id), method: :post %>
+    </tr>
+  <% end %>
+</table>

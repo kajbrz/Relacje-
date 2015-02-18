@@ -7,15 +7,15 @@
 </h1>
 <div class="opcje">
   <br/><%= link_to 'wróć', szafki_path %>
-  <br/><%= link_to 'schowaj', {action: :schowaj, szafka_id: @szafka.id}, method: :post%>
-  <br/><%= link_to 'zwróć tutaj ', {action: :zwroc_przedmioty, szafka_id: @szafka.id}, method: :post%>
   <br/><%= link_to 'edytuj', '/szafki/'+@szafka.id.to_s+'/edit' %>
-  <br/><%= link_to 'usuń', szafki_path(@szafka), method: :delete, data: {confirm: "Czy na pewno?"}%>
+  <br/><%= link_to 'usuń', szafki_path(id: @szafka), method: :delete, data: {confirm: "Czy na pewno?"}%>
 </div>
 <div class="opis">
-  <p><i>miejsce</i> <b><%= @szafka.miejsce %></b></p>
-  <p><i>numer </i> <b><%= @szafka.numer %></b> </p> 
-  <p><i>komentarz</i>  <b><%= @szafka.komentarz %></b></p>
+  <table style="text-align:left;">
+  <tr><td style="width: 100px">miejsce: <td><b><%= @szafka.miejsce %></b></tr>
+  <tr><td>numer:  <td><b><%= @szafka.numer %></b></tr>
+  <tr><td>komentarz: <td><i><%= @szafka.komentarz %></i></tr>
+  </table>
 </div>
 <br/>
 <% if @szafka.przedmioties.count > 0 %>
@@ -24,19 +24,21 @@
       <p>Przedmioty w szafce:</p>
       <table>
         <tr>
+          <td>id
           <td>typ
           <td>nazwa
           <td>model
         <tr>
         <% @szafka.przedmioties.each do |p| %>  
           <tr>
+            <td><%= p.id %>
             <td><%= p.typ %>
             <td><%= p.nazwa %>
             <td><%= p.model %>
-            <td><%= p.stan %>
-            <% unless (session[:wybrane_przedmioty].include? p.id  if session[:wybrane_przedmioty])%>
+            <td><%= link_to "pokaż", przedmioty_show_path(id: p.id) %>
+            <% if @opt %>
               <td>
-                <%= link_to('wybierz', przedmioty_wybierz_path(p, {pathC: params[:controller], pathA: params[:action], pathI: params[:id] }), method: :post)%>
+                <%= link_to "zwróć", szafki_zwroc_przedmioty_path(id: p.id, szafka_id: @szafka.id), method: :post %>
               </td>
             <% end %>
           <tr>

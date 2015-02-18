@@ -1,0 +1,3 @@
+1|Synergia|synergia@synergia.pl|$2a$10$5vcnvI1maZeVdtBVAbueR.Chd.wqGdUrTLLyVhkwIB6uwPK/9sxy2|$2a$10$5vcnvI1maZeVdtBVAbueR.||SuperAdministrator|3| 
+2|Michal|kajbrz@gmail.com|$2a$10$LOvSBArU3FgnKV5Tp1H5ae1krTqfG.h7bhrV589wiDK.At4zIPq4O|$2a$10$LOvSBArU3FgnKV5Tp1H5ae||rekrut|2|  
+3|MICHAL|kajbrz@hotmail.com|$2a$10$YCOO6ZguXOc341eUatHuROzSC9McLoEtDON7H1cS6IcwOcM8Qy/Lm|$2a$10$YCOO6ZguXOc341eUatHuRO||rekrut|0|  

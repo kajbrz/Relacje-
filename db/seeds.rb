@@ -19,7 +19,7 @@ Szafki.create!(
   numer: 0,
   uzytkownicy_id: 0
 )
-
+if false
 Przedmioty.create!(
   id: 1,
   typ: 'elektronika',
@@ -30,6 +30,7 @@ Przedmioty.create!(
   szafki_id: 0, #0 brak przynaleznosci do zadnej szafki
   projekty_id: 0 #0 brak przynaleznosci do zadnego projektu
 )
+end
 @uzytkownik = Hash.new
 
 @uzytkownik[:nick] = "Synergia"   

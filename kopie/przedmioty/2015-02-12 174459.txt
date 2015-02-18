@@ -1,0 +1,19 @@
+2|elektronika| dla wszystkich| 23123sda|0|1|1|1|  
+4|dasd|dasdas|asdas|1|0|0|0|   
+6|dasd|dasdas|asdas|1|0|0|0|   
+7|dasd|dasdas|asdas|1|1|4|0|   
+8|dasd|dasdas|asdas|1|0|0|0|   
+9|dasd|dasdas|asdas|1|0|0|0|   
+10|dasd|dasdas|asdas|1|0|0|0|   
+11|dasd|dasdas|asdas|1|1|4|0|   
+12|dasd|dasdas|asdas|1|0|0|0|   
+13|dasd|dasdas|asdas|1|0|0|0|   
+14|dasd|dasdas|asdas|1|0|0|0|   
+15|dasd|dasdas|asdas|1|0|0|0|   
+16|dasd|dasdas|asdas|1|0|0|0|   
+17|dasd|dasdas|asdas|1|0|0|0|   
+18|dasd|dasdas|asdas|1|1|4|0|   
+19|dasd|dasdas|asdas|1|0|0|0|   
+20|dasd|dasdas|asdas|1|0|0|0|   
+21|dasd|dasdas|asdas|1|0|0|0|   
+22|dasd|dasdas|asdas|1|0|0|0|   

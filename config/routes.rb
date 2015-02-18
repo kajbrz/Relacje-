@@ -10,9 +10,17 @@ Rails.application.routes.draw do
 
   post 'uzytkownicy/nowe_haslo'
 
+  post 'uzytkownicy/lista'
+   
+  get'uzytkownicy/lista'
+
+  post 'uzytkownicy/pobierz'
+
   get 'uzytkownicy/zapomnialem'
 
   post 'uzytkownicy/zmien_haslo'
+
+  post 'uzytkownicy/zaladuj'
 
   get 'uzytkownicy/administracja'
 
@@ -26,9 +34,11 @@ Rails.application.routes.draw do
 
   post 'projekty/edytuj_role'
 
+  post 'projekty/zmien_role'
+
   post 'projekty/usun_uzytkownika'
 
-  post 'projekty/dodaj_przedmioty'#, as: 'projekty#dodaj'
+  post 'projekty/dodaj_osobe'
 
   delete 'projekty/destroy'
  
@@ -52,6 +62,8 @@ Rails.application.routes.draw do
 
   get 'szafki/index'
 
+  post 'szafki/index'
+
   get 'szafki', to: 'szafki#index'
 
   get 'szafki/show'
@@ -65,7 +77,6 @@ Rails.application.routes.draw do
   post 'szafki/schowaj'
 
 
-  get 'szafki/destroy'
 
   get 'szafki/:id', to: 'szafki#show'
 
@@ -73,8 +84,7 @@ Rails.application.routes.draw do
 
   patch 'szafki/:id/edit', to: 'szafki#update'
 
-  delete 'szafki.:id', to: 'szafki#destroy'
-  
+  delete 'szafki', to: 'szafki#destroy'
 
   post 'szafki/zwroc_przedmioty'
 
@@ -94,7 +104,21 @@ Rails.application.routes.draw do
 
   post 'przedmioty/create'
 
+  post 'przedmioty/dodaj_do_projektu'
+
+  post 'przedmioty/dodaj_do_projektu_A'
+
+  post 'przedmioty/wypozycz'
+
+  post 'przedmioty/schowaj'
+
+  post 'przedmioty/schowaj_A'
+
   post 'uzytkownicy/resetuj_haslo'  
+	
+  post 'uzytkownicy/kopia'
+
+
 
   delete 'przedmioty.:id', to: 'przedmioty#destroy'
 

@@ -1,4 +1,7 @@
+
+
 <%= form_for :odzyskaj_haslo, url: uzytkownicy_nowe_haslo_path do |f| %>
+
   <%= f.label @uzytkownik.email %>
   <%= f.hidden_field 'uzytkownik', value: @uzytkownik.id %> 
   <%= f.hidden_field 'salt' , value: @uzytkownik.haslo_salt %><br/>
@@ -7,4 +10,5 @@
   <%= f.label 'Powtórz hasło' %>
   <%= f.password_field :haslo2 %> <br/>
   <%= f.submit :zmien %>
+  
 <% end %> 

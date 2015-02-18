@@ -1,13 +1,15 @@
-<h1> przedmiot </h1>
+<h1> przedmiot #<%= @przedmiot.id %> </h1>
 <div class="opcje">
   <%= link_to 'edytuj', @przedmiot.id.to_s + '/edit' %><br/>
-  <%= link_to 'usun', przedmioty_path(@przedmiot), method: :delete, data: {confirm: "Na pewno?"} %>
+  <%= link_to 'usuń', przedmioty_path(@przedmiot), method: :delete, data: {confirm: "Na pewno?"} %> <br/>
+  <%= link_to 'idź do szafki', szafki_show_path(id: @przedmiot.szafki) %>
 </div>
-
-<p>typ: <b><%=@przedmiot.typ %></b></p>
-<p>nazwa: <b><%=@przedmiot.nazwa %></b></p>
-<p>model: <b><%=@przedmiot.model %></b></p>
-<p>stan: <b><%=@przedmiot.stan %></b></p>
-<p>opis: <i><%=@przedmiot.komentarz %></i></p>
+<table style="text-align: left;">	
+	<tr><td style=" width: 100px"><p>typ: <td><b><%=@przedmiot.typ %></b></p> </tr>
+	<tr><td><p>nazwa: <td><b><%=@przedmiot.nazwa %></b></p></tr>
+	<tr><td><p>model: <td><b><%=@przedmiot.model %></b></p></tr>
+	<tr><td><p>stan: <td><b><%=@przedmiot.stan %></b></p></tr>
+	<tr><td><p>opis: <td><i><%=@przedmiot.komentarz %></i></p></tr>
+</table>
 
 

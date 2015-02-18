@@ -1,16 +1,18 @@
 
-<p>nick <b><%= @uzytkownik.nick %> </b></p>
+<h1><%= @uzytkownik.nick %> </h1>
 
 <div class="opcje">
   <%= link_to "Idz do szafki", {controller: :szafki, action: :show, id: @uzytkownik.szafkis.first} %><br/>
   <%= link_to 'edytuj', action: :edit, id: @uzytkownik.id%>
 </div>
-<p>email <b><%= @uzytkownik.email %> </b></p>
-<p>status_czlonka <b><%= @uzytkownik.status_czlonka %> </b></p>
-<p>ostatnie logowanie <b><%= @uzytkownik.ostatnie_logowanie %> </b></p>
-<p>komentarz: <i><%= @uzytkownik.komentarz %> </i></p>
+<table>
 
+	<tr><td style="width: 100px"><p>email <td><b><%= @uzytkownik.email %> </b></p> </tr>
+	<tr><td><p>status_czlonka <td><b><%= @uzytkownik.status_czlonka %> </b></p></tr>
+	<tr><td><p>ostatnie logowanie <td><b><%= @uzytkownik.ostatnie_logowanie %> </b></p></tr>
+	<tr><td><p>komentarz: <td><i><%= @uzytkownik.komentarz %> </i></p></tr>
 
+</table>
 
 
 

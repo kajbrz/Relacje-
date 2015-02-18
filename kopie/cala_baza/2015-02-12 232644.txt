@@ -1,0 +1,56 @@
+
+////PRZEDMIOTY
+2|elektronika| dla wszystkich| 23123sda|0|1|1|1|    
+4|dasd|dasdas|asdas|1|0|1|0|     
+6|dasd|dasdas|asdas|1|0|1|0|     
+7|dasd|dasdas|asdas|1|1|4|0|     
+8|dasd|dasdas|asdas|1|0|1|6|     
+9|dasd|dasdas|asdas|1|0|1|7|     
+10|dasd|dasdas|asdas|1|0|1|0|     
+11|dasd|dasdas|asdas|1|1|4|0|     
+12|dasd|dasdas|asdas|1|0|1|6|     
+13|dasd|dasdas|asdas|1|0|1|0|     
+14|dasd|dasdas|asdas|1|0|1|0|     
+15|dasd|dasdas|asdas|1|0|1|0|     
+16|dasd|dasdas|asdas|1|0|1|0|     
+17|dasd|dasdas|asdas|1|0|1|7|     
+18|dasd|dasdas|asdas|1|1|4|0|     
+19|dasd|dasdas|asdas|1|0|1|0|     
+20|dasd|dasdas|asdas|1|0|1|6|     
+21|dasd|dasdas|asdas|1|0|1|0|     
+22|dasd|dasdas|asdas|1|0|1|7|     
+1382|cos |cos|sdasda|1|11|72|4| 
+1383|cos |cos|sdasda|2|0|1|0| 
+1384|cos |cos|sdasda|2|0|1|4| 
+1385|cos |cos|sdasda|2|0|1|6| 
+1386|cos |cos|sdasda|2|0|1|4| 
+////UZYTKOWNICY
+1|Synergia|synergia@synergia.pl|$2a$10$6YaI9BGIPaxkQy6Y0muAFOU/iW0lYDrSk6Oqto/p8wqsfxK6hZfle|$2a$10$6YaI9BGIPaxkQy6Y0muAFO||rekrut|3| 
+2|Michal|kajbrz@gmail.com|$2a$10$G8FTTOeWNgf9VLfRWkRq2eq1aa4DjXGEZecIguSFbaOplTlRqnuh.|$2a$10$G8FTTOeWNgf9VLfRWkRq2e||rekrut|2|    
+3|MICHAL|kajbrz@hotmail.com|$2a$10$Df6T8epvxHsH9TGDQKvnvORoQ59BNfkzZeI2xQcUu2NfWKORuCnwO|$2a$10$Df6T8epvxHsH9TGDQKvnvO||rekrut|1|    
+10|antoni|major@major.po|$2a$10$E3BMcr3Izwr1QKDA6jonFeCxg.SCqQ8SFCZp1EaOi/afNIt5pmbUa|$2a$10$E3BMcr3Izwr1QKDA6jonFe||rekrut|1|  
+11|dwas|dwjaks@op.pl|$2a$10$N3BvL2uUXvOUQ2hHkPrdj.FlDMtU/e706JAuc7551ec7Bh1GPFJ/K|$2a$10$N3BvL2uUXvOUQ2hHkPrdj.||SuperAdministrator|1| 
+12|adam|adam@adam.pl|$2a$10$dUVdLKqa5/nliWZ0HywDRugmKb3kVzGyCEk1CmKwhORXVR8aHZ/kO|$2a$10$dUVdLKqa5/nliWZ0HywDRu||rekrut|1| 
+////PROJEKTY
+4|Coś tam|coś tam|coś tam|4 
+6|projekto|ujemny1|dwafag| 
+7|Cost tam |jdaksdl|daklsdjakls1jkdqihdkuqahcfkjabdkahwkdhawkudhgakhdlkawhdlkahnlwsudgawhdujlawhgujkvghbhv brjahg fisdgsrk vltujas hjmsjhdrgs kilghdaklsdjakls1jkdqihdkuqahcfkjabdkahwkdhawkudhgakhdlkawhdlkahnlwsudgawhdujlawhgujkvghbhv brjahg fisdgsrk vltujas hjmsjhdrgs kilghdaklsdjakls1jkdqihdkuqahcfkjabdkahwkdhawkudhgakhdlkawhdlkahnlwsudgawhdujlawhgujkvghbhv brjahg fisdgsrk vltujas hjmsjhdrgs kilghdaklsdjakls1jkdqihdkuqahcfkjabdkahwkdhawkudhgakhdlkawhdlkahnlwsudgawhdujlawhgujkvghbhv brjahg fisdgsrk vltujas hjmsjhdrgs kilgh|71 
+////PROJEKTY_UZYTKOWNICY
+2|1|nieustalono 
+1|4|nieustalono 
+2|5|nieustalono 
+11|6|nieustalono 
+1|6|nieustalono 
+1|7|nieustalono 
+11|7|nieustalono 
+////SZAFKI
+1|nieznane|0|0|
+3|dom|0|2|
+4|Kolo komputera|5|1|Jakis komentarz 
+5|dom|0|3|
+70|dom|0|10|
+71|dom|0|3|
+72|dom|0|11|
+73|szafka|4|0|Duża półka obok komputera
+75|tam|121|0|
+76|taas|21|12|

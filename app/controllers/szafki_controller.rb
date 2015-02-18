@@ -21,13 +21,13 @@ class SzafkiController < ApplicationController
   end
 
   def show
-    @szafka = Szafki.where(id: params[:id])
-    if @szafka.count > 0
-      @szafka = @szafka.first
-    else
+    unless @szafka = Szafki.where(id: params[:id]).first
       flash[:error] = "nie ma takiej szafki"
       redirect_to action: :index and return
     end
+
+    @opt = (@szafka.uzytkownicy_id != 0 && @szafka.uzytkownicy_id == @uzytkownik_id)
+
   end
 
   def edit
@@ -47,67 +47,38 @@ class SzafkiController < ApplicationController
     end
   end
   
-  def schowaj
-	  if @szafka = Szafki.where(id: params[:szafka_id]).first
-      if session[:wybrane_przedmioty] && session[:wybrane_przedmioty].count > 0
-				if ((@szafka.uzytkownicy_id == 0) || (@szafka.uzytkownicy_id == @uzytkownik_id) || (@poziom_dostepu > 2))
-				  @id_err = []      
-				  if @przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty])
-				    @przedmioty.each do |p|
-              if ((p.stan == 2) || (@poziom_dostepu>2)) 
-                if @szafka.uzytkownicy_id == @uzytkownik_id
-                  p.update(szafki_id: params[:szafka_id], stan: 1, uzytkownicy_id: @uzytkownik_id) 
-                else
-                  p.update_attributes(szafki_id: params[:szafka_id], stan: 2, uzytkownicy_id: 0) 
-                end
-              else
-                @id_err += [p.id]
-              end
-					 	end
-            if @id_err.count > 0
-							flash[:notice] = "\nnieschowano przedmiotow o id: " + @id_err.to_s
-						else
-							flash[:notice] = "\nschowano wszystkie przedmioty"	
-						end
-						session[:wybrane_przedmioty] = nil
-				  else
-				    flash[:notice] = "brak przedmiotow do dodania"
-				  end  
-				else
-      		flash[:error] = "nie masz wystarczajacych uprawnien do skorzystania z tej szafki"
-				end 
-			else			
-        flash[:error] = "nie mozna nic schowac"		
-			end
-    else
-      flash[:error] = "nie znaleziono szafki"
-    end
-		redirect_to action: :show, id: @szafka 
-  end
 
   def zwroc_przedmioty
-    if session[:wybrane_przedmioty] && session[:wybrane_przedmioty].size > 0
-      if @przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty], 
-          uzytkownicy_id: @uzytkownik_id)               
-			  if @szafka = Szafki.where(id: params[:szafka_id], uzytkownicy_id: 0).first
-          if true    
-            @przedmioty.update_all(stan: 2, uzytkownicy_id: 0, szafki_id: params[:szafka_id])
-            flash[:notice] = "udostepniono " + @przedmioty.size.to_s + 
-              " przedmiotow"
-            session[:wybrane_przedmioty] = nil
-          else
-            flash[:error] = "nie mozesz zwrocic przedmiotow do tej szafki"        
-          end
-        else
-          flash[:error] = "nie znaleziono szafki lub nalezy do innego uzytkownika"        
-        end
-      else
-        flash[:error] = "nie zaznaczyles zadnych przedmiotow"
-      end
-    else
-      flash[:error] = "nie mozesz zwrocic tych przedmiotow"
+    blad = false
+    unless @przedmiot = Przedmioty.where(id: params[:id]).first
+      flash[:error] = "nie znaleziono przedmiotu"
+      blad = true
     end
-		redirect_to action: :show, id: @szafka
+
+    if @przedmiot.uzytkownicy_id == 0
+      flash[:error] = "nie trzeba zwracać tego przedmiotu"
+      blad = true      
+    end
+
+    unless @przedmiot.uzytkownicy_id == @uzytkownik_id
+      flash[:error] = "nie trzeba zwracać tego przedmiotu"
+      blad = true      
+    end
+
+    unless blad
+      flash[:notice] = "pomyślnie zwrócono przedmiot"
+      @przedmiot.uzytkownicy_id = 0
+      @przedmiot.szafki_id = @przedmiot.szafka_pierwotna
+      @przedmiot.save
+    end
+
+
+    if @szafka = Szafki.where(id: params[:szafka_id]).first
+      redirect_to szafki_path(id: @szafka.id)
+    else
+      redirect_to szafki_path
+    end
+
   end
 
   def update
@@ -148,11 +119,12 @@ class SzafkiController < ApplicationController
 
   def destroy
     if @szafka = Szafki.where(id: params[:id]).first
-      if @poziom_dostepu > 1 || @szafka.uzytkownicy_id == @uzytkownik_id  
-        @szafka.przedmioties.delete_all
-        @szafka.projekties.delete_all
-        @szafka.delete
-        flash[:notice] = "szczesliwe usunieto"
+      if @szafka.id == 1
+        flash[:error] = "tej szafki nie można usunąć"
+        redirect_to szafki_path and return
+      elsif @poziom_dostepu > 1 || @szafka.uzytkownicy_id == @uzytkownik_id           
+        @szafka.destroy
+        flash[:notice] = "szczesliwe usunieto" 
       else
         flash[:error] = "brak dostepu"
       end

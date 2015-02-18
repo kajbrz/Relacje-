@@ -6,6 +6,11 @@ class ApplicationController < ActionController::Base
   before_action :poziom_dostepu
 private #section
   
+  def initialize
+    super
+    load "semafor.rb"
+  end
+
   def poziom_dostepu
     if id = Sesja.sprawdz(session[:session_id])
       if @uzytkownik_id = Uzytkownicy.where(id: id).first

@@ -1,0 +1,8 @@
+
+////PRZEDMIOTY
+////UZYTKOWNICY
+1|Synergia|synergia@synergia.pl|$2a$10$F8FoTPE/QOTBb4yEl4tJkuac41bTwmTueNKRNVDhp5I8bhoNaf0di|$2a$10$F8FoTPE/QOTBb4yEl4tJku||SuperAdministrator|3| 
+////PROJEKTY
+////PROJEKTY_UZYTKOWNICY
+////SZAFKI
+1|nieznane|0|0|

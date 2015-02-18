@@ -1,0 +1,9 @@
+<h1>Nadaj rolę </h1> 
+<h3>użytkownikowy <i><%= @uzytkownik.nick %></i> w projekcie <i><%= @projekt.nazwa %></i> </h3>
+
+<%= form_tag projekty_edytuj_role_path, method: :post do %>
+	Podaj: <%= text_field_tag 'rola' %>
+	<%= hidden_field_tag 'uzytkownik_id', @uzytkownik.id %>
+	<%= hidden_field_tag 'projekt_id', @projekt.id %>
+	<%= submit_tag 'nadaj' %>
+<% end %>

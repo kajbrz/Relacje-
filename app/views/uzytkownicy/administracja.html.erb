@@ -1,4 +1,36 @@
-<h1> administracja </h1>
+﻿<h1> administracja </h1>
+<div class="opcje">
+  <%= link_to 'zobacz kopie', uzytkownicy_lista_path(link: ""), method: :post %> <br />
+</div>
+<%= link_to 'kopia tekstowa bazy danych', uzytkownicy_kopia_path(metoda: "cala"), method: :post%> <br />
+<%= link_to "kopia tekstowa przedmiów", uzytkownicy_kopia_path(metoda: "przedmioty"), method: :post%><br />
+<%= link_to "kopia tekstowa projektów", uzytkownicy_kopia_path(metoda: "projekty"), method: :post%><br />
+<%= link_to "kopia tekstowa użytkowników", uzytkownicy_kopia_path(metoda: "uzytkownicy"), method: :post%><br />
+<p> Załadowywanie plików </p>
+<%= form_tag "uzytkownicy/zaladuj", name: "plikform", multipart: true do %>
+  <%= file_field_tag "plik", onclick: "showlinks()" %> <br/>
+  <input type="hidden" name="wartosc" />
+
+  <div id="blok" >
+    <a href="javascript: submitform(1)" name="klik"> załaduj przedmioty </a> <br/>
+    <a href="javascript: submitform(2)" name="klik"> załaduj projekty </a><br/>
+    <a href="javascript: submitform(3)" name="klik"> odzyskaj całą bazę danych (operacja krytyczna) </a><br/>
+  </div>
+  <script type="text/javascript">
+  function submitform(zmienna)
+  {
+    document.plikform.wartosc.value = zmienna;
+    document.plikform.submit(1);
+  }
+  function showlinks()
+  {
+    document.getElementById("blok").style = "display : inline";
+  }
+  </script>
+
+<% end %>
+
+<br />
 <table>
   <% @uzytkownicy.each do |u| %>
   <tr>
@@ -11,3 +43,4 @@
   </tr>
   <% end %>
 </table>
+
