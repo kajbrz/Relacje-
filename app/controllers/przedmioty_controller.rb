@@ -17,7 +17,7 @@ class PrzedmiotyController < ApplicationController
         @przedmioty = Przedmioty.group(:typ, :nazwa, :model)
       end
     end  
-    @przedmiotypaginate(:page => params[:page], :per_page => 50)
+    @przedmioty.paginate(:page => params[:page], :per_page => 50)
   end
 
   def show
