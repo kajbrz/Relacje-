@@ -5,21 +5,21 @@
 # gem 'sqlite3'
 #
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
+  adapter: postgresql
+  database: deveDB
   pool: 5
   timeout: 5000
 
 test:
-  adapter: sqlite3
-  database: db/test.sqlite3
+  adapter: postgresql
+  database: testDB
   pool: 5
   timeout: 5000
 
 production:
   adapter: postgresql
   encoding: unicode
-  database: db/production
+  database: deveDB
   pool: 5
   timeout: 5000
   password:
