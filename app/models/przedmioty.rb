@@ -20,6 +20,4 @@ class Przedmioty < ActiveRecord::Base
       self.szafka_pierwotna = 1
     end
   end
-  
- 
 end

@@ -1,8 +1,10 @@
 
 <h1>szafki</h1>
-<div class="opcje" >
-  <%= link_to 'nowa szafka', szafki_new_path %>
-</div>
+<% if @poziom_dostepu > 1 %>
+  <div class="opcje" >
+    <%= link_to 'nowa szafka', szafki_new_path %>
+  </div>
+<% end %>
 <%= form_tag :szafki_index, method: :get do %>
   <%= text_field_tag :szukaj, "szukaj", onfocus: "if(this.value == 'szukaj') { this.value = ''; }"%>
 <% end %>

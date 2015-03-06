@@ -1,13 +1,21 @@
 <h1> użytkownicy </h1>
 <table  >
+  <tr>
+    <td> id
+    <td> nick
+    <td> email
+    <td> status
+  </tr>
   <% @uzytkownicy.each do |u| %>
   <tr>
-  <td> <%= u.nick %>
-  <td> <%= u.email %>
-  <td> <%= u.status_czlonka  %>
-  <td> <%= u.ostatnie_logowanie  %>
-  <td> <%= link_to 'zobacz', uzytkownicy_path+ '/' + u.id.to_s%>
-  <td> <%= link_to 'usuń', uzytkownicy_path(u), method: :delete%>
+    <td> <%= u.id %>
+    <td> <%= u.nick %>
+    <td> <%= u.email %>
+    <td> <%= u.status_czlonka  %>
+    <td> <%= link_to 'zobacz', uzytkownicy_path+ '/' + u.id.to_s%>
+    <% if @poziom_dostepu > 2 %> 
+        <td> <%= link_to 'usuń', uzytkownicy_path(u), method: :delete%>
+    <% end %>
   </tr>
   <% end %>
 </table>

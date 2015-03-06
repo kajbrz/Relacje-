@@ -4,6 +4,51 @@ class UzytkownicyController < ApplicationController
   before_action :poziom2, only: [:administracja, :edit, :administruj, :administruj_odrzuc, :lista, :pobierz, :zaladuj, :kopia]
   before_action :poziom3, only: [:destroy]
 
+  def index
+    @uzytkownicy = Uzytkownicy.all
+  end
+  
+  def update 
+    begin
+      @uzytkownik = Uzytkownicy.find(params[:id])
+      
+      @uzytkownik.update_attributes(params.require(:uzytkownik).permit(:status_czlonka, :komentarz))
+    rescue
+      flash[:error] = "Nie znaleziono uzytkownika"
+      redirect_to root_path and return
+    end
+    redirect_to root_path
+  end
+  
+  def edit
+    begin
+      @uzytkownik = Uzytkownicy.find(params[:id])
+    rescue
+      flash[:error] = "Nie znaleziono uzytkownika"
+      redirect_to root_path and return
+    end
+  end
+
+  def show
+    begin
+      @uzytkownik = Uzytkownicy.find(params[:id])
+    rescue
+      flash[:error] = "Nie znaleziono uzytkownika"
+      redirect_to root_path and return
+    end
+  end 
+
+  def destroy
+    if @uzytkownik = Uzytkownicy.where(id: params[:id]).first
+      if @uzytkownik.delete 
+        flash[:notice] = "usunięto użytkownika"
+      end
+    else
+      flash[:error] = "nie znaleziono użytkownika"      
+    end
+    redirect_to uzytkownicy_path
+  end
+
   def logowanie
     redirect_to root_path and return if Sesja.sprawdz(session[:session_id])
   end
@@ -43,39 +88,6 @@ class UzytkownicyController < ApplicationController
     redirect_to action: :logowanie
   end
 
-  def index
-    @uzytkownicy = Uzytkownicy.all
-  end
-  
-  def update 
-    begin
-      @uzytkownik = Uzytkownicy.find(params[:id])
-      
-      @uzytkownik.update_attributes(params.require(:uzytkownik).permit(:status_czlonka, :komentarz))
-    rescue
-      flash[:error] = "Nie znaleziono uzytkownika"
-      redirect_to root_path and return
-    end
-    redirect_to root_path
-  end
-  
-  def edit
-    begin
-      @uzytkownik = Uzytkownicy.find(params[:id])
-    rescue
-      flash[:error] = "Nie znaleziono uzytkownika"
-      redirect_to root_path and return
-    end
-  end
-
-  def show
-    begin
-      @uzytkownik = Uzytkownicy.find(params[:id])
-    rescue
-      flash[:error] = "Nie znaleziono uzytkownika"
-      redirect_to root_path and return
-    end
-  end 
 
   def wyloguj
     Sesja.zakoncz_sesje(session[:session_id])
@@ -115,19 +127,6 @@ class UzytkownicyController < ApplicationController
     end
     redirect_to administracja_path
   end  
-
-  def destroy
-    if @uzytkownik = Uzytkownicy.where(id: params[:id]).first
-      if @uzytkownik.delete 
-        flash[:notice] = "usunięto użytkownika"
-      end
-    else
-      flash[:error] = "nie znaleziono użytkownika"      
-    end
-    redirect_to uzytkownicy_path
-  end
-
-
 
   def odzyskaj_haslo
     if @uzytkownik = Uzytkownicy.where(id: params[:id]).where(haslo_salt: params[:salt]).first
@@ -214,11 +213,11 @@ class UzytkownicyController < ApplicationController
       end
     when 3
       flash[:notice] += " całej bazy danych (wymaga ponownego logowania)"
-      t = Thread.new do
+      #t = Thread.new do
          odzyskaj_baze_danych(params[:plik])
-      end
+      #end
     end
-    Semafor.dodajWatek(t)
+   #Semafor.dodajWatek(t)
     redirect_to administracja_path
   end
 
@@ -283,10 +282,11 @@ class UzytkownicyController < ApplicationController
 
         f = File.new(Pathname.new(nazwa_pliku), "w")
         Przedmioty.all.each do |pt|
-         ciag = pt.id.to_s + "|" +pt.typ + "|" +pt.nazwa + "|" +pt.model + "|" +pt.stan.to_s + "|" +pt.uzytkownicy_id.to_s + "|" +pt.szafki_id.to_s + "|" + pt.projekty_id.to_s + "|" +pt.komentarz.to_s.delete("|") + "\n"
-         
+         ciag = pt.id.to_s + "|" +pt.typ + "|" + pt.nazwa + "|" +pt.model + "|" +pt.stan.to_s + "|" +pt.uzytkownicy_id.to_s + "|" +pt.szafki_id.to_s + "|" + pt.szafka_pierwotna.to_s + "|" + pt.projekty_id.to_s + "|" +pt.komentarz.to_s.delete("|") + "\n"
+      
          ciag = ciag.delete("\r").gsub(/\n/, ' ')
          ciag += "\n"
+
          f.write(ciag)  
         end
         f.close
@@ -337,8 +337,9 @@ class UzytkownicyController < ApplicationController
         f.write("\n////PRZEDMIOTY" + "\n")
         Przedmioty.all.each do |pt|
          ciag = pt.id.to_s + "|" +pt.typ + "|" +pt.nazwa + "|" +pt.model + "|" +pt.stan.to_s + "|" +pt.uzytkownicy_id.to_s + "|" +pt.szafki_id.to_s + "|" + pt.projekty_id.to_s + "|" +pt.komentarz.to_s.delete("|") + "\n"
-         ciag = ciag.delete("\r").gsub(/\n/, ' ')
+         #ciag = ciag.delete("\r").gsub(/\n/, ' ')
          ciag += "\n"
+         puts ciag
          f.write(ciag)  
         end
 
@@ -385,8 +386,6 @@ class UzytkownicyController < ApplicationController
   end
 
   def dodaj_przedmioty(param)
-    puts "Cos sie dzieje"
-
     param.read.lines do |line| 
       podzielonaLinia = line.delete("\n").delete("\r").split("|")
 
@@ -429,17 +428,16 @@ class UzytkownicyController < ApplicationController
     utworz_kopie("cala")
     load "#{Rails.root}/db/seeds.rb"
 
-    #Przedmioty.delete_all
+    Przedmioty.delete_all
 
-    #Projekty.delete_all
+    Projekty.delete_all
 
-    #Uzytkownicy.delete_all
+    Uzytkownicy.delete_all
 
-    #ProjektyUzytkownicy.delete_all
+    ProjektyUzytkownicy.delete_all
 
-    #Szafki.delete_all
-        puts "#"*100 + "LOOOOL"
-    aktualny_stan = "none";
+    Szafki.delete_all
+    aktualny_stan = "none" ## Opisać to
     param.read.lines do |line|
       if(line[0] == "/" && line[1] == "/" && line[2] == "/" && line[3] == "/" )
         aktualny_stan = line[4..30].chop.delete(" ")
@@ -507,7 +505,7 @@ class UzytkownicyController < ApplicationController
           )
           a.update(id: podzielonaLinia[0])
         end
-         
+        a.save 
       end
     end
   end

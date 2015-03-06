@@ -1,8 +1,11 @@
 <h1>dodaj projekt</h1>
 <%= form_for :projekty,url: projekty_create_path do |f| %>
-  <p><%= f.label :nazwa %> <%= f.text_field :nazwa %>
-  <p><%= f.label :stan %> <%= f.text_field :stan %>
-  <p><%= f.label :opis %> <%= f.text_area :opis %>
+  <p><%= f.label :nazwa %> <%= f.text_field :nazwa %></p>
+  <p><%= f.label :stan %> <%= f.text_field :stan %></p>
+  <p><%= f.label :opis %> <%= f.text_area :opis, onkeypress: "wlacznik()", id: "pole" %> 
+  <br/>
+    <small style="text-align: center;"> minimum 200 znaków </small>
+  </p>
   <% if @poziom_dostepu > 1%>
     <p><%= f.label :uzytkownik %> 
         <%= f.collection_select :uzytkownik_id, Uzytkownicy.all, :id, :nick, prompt: false%>
@@ -10,5 +13,16 @@
   <% else %>
     <p><%= f.hidden_field :uzytkownik_id, value: @uzytkownik_id %></p>
   <% end %>
-  <%= f.submit :dodaj %>
+  <%= f.submit :dodaj,  id: "myBtn" , disabled: "true"%>
 <% end %>
+
+
+<script type="text/javascript">
+  function wlacznik()
+  {   
+    if (document.getElementById("pole").value.length < 200)
+      document.getElementById("myBtn").disabled = true;
+    else 
+      document.getElementById("myBtn").disabled = false;
+  }
+</script>

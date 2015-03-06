@@ -1,11 +1,13 @@
 
 <h1>przedmioty </h1>
 <div class="opcje">
-  <%= link_to 'dodaj przedmiot', action: :new %><br/>
+  <% if @poziom_dostepu > 1 %>
+    <%= link_to 'dodaj przedmiot', action: :new %><br/>
+  <% end %>
   <% if params[:wybrane] %>
     <%= link_to "wyczyść wybrane", przedmioty_wyczysc_path, method: :post %>
     <% if @poziom_dostepu > 2 %>
-      <br/><%= link_to "usuń wybrane", przedmioty_destroy_all_path, method: :delete %>
+      <br/><%= link_to "usuń wybrane", przedmioty_destroy_all_path, method: :delete, data: {confirm: "Czy na pewno?"}%>
     <% end %>  
     <br/>
     <%= link_to "Dodaj do projektu", przedmioty_dodaj_do_projektu_path, method: :post %> <br/>
@@ -48,6 +50,11 @@
       </tr>
     <% end %>
   </table>
+  <% if @strony %>
+    <% @strony.times do |p| %>
+      <%= link_to :p %>
+    <% end %>
+  <% end %>
 <% else %>
   <p> Brak Rekordów </p>
 <% end %>

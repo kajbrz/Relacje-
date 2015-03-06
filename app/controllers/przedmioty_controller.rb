@@ -14,10 +14,11 @@ class PrzedmiotyController < ApplicationController
       if params[:wybrane]
         @przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty])       
       else
-        @przedmioty = Przedmioty.all
+        @przedmioty = Przedmioty.group(:typ, :nazwa, :model)
       end
     end  
-   
+
+    @strony = (@przedmioty.size / 4).floor
   end
 
   def show
@@ -27,28 +28,6 @@ class PrzedmiotyController < ApplicationController
     rescue
       flash[:error] = 'Nie znaleziono przedmiotu'
       redirect_to przedmioty_index_path
-    end
-  end
-
-  def wybierz
-    
-    if @przedmiot = Przedmioty.where(id: params[:id]).first
-      unless session[:wybrane_przedmioty]
-        session[:wybrane_przedmioty] = []
-      end
-      unless session[:wybrane_przedmioty].include? @przedmiot.id
-        session[:wybrane_przedmioty] += [@przedmiot.id]
-      else
-        flash[:error] = 'nie mozesz ponownie dodac identycznego przedmiotu'  
-      end
-    else      
-      flash[:error] = 'nie znaleziono przedmiotu'
-    end
-    if params[:pathC]
-      #redirect_to_url(params[:path])
-      redirect_to controller: params[:pathC], action: params[:pathA], id: params[:pathI]
-    else
-      redirect_to action: :index      
     end
   end
 
@@ -63,13 +42,24 @@ class PrzedmiotyController < ApplicationController
   end
 
   def update
-    @przedmiot = Przedmioty.find(params[:id])
-    @przedmiot.update(params.require(:przedmioty).permit(:typ, :nazwa, :model, :stan, :uzytkownicy_id, :projekty_id, :szafki_id)) 
+    blad = false
+    unless @przedmiot = Przedmioty.where(id: params[:id]).first
+      blad = true
+    end
+    unless blad
+      b= @przedmiot.update(params.require(:przedmioty).permit(:typ, :nazwa, :komentarz, :model, :stan, :uzytkownicy_id, :projekty_id, :szafki_id)) 
+      if b == false
+        flash[:error] = "nie możesz zostawić pustych pól"
+      end
+      redirect_to przedmioty_show_path(id: @przedmiot.id) and return
+    end
     redirect_to przedmioty_index_path
   end     
 
   def create
-    @param = params.require(:przedmiot).permit(:typ, :nazwa, :model, :stan, :uzytkownicy_id, :projekty_id, :szafki_id)
+    @param = params.require(:przedmiot).permit(:typ, :nazwa, :model, :stan, :komentarz)
+    @param[:uzytkownicy_id] = 0
+    @param[:szafki_id] = 0
     if @przedmiot = Przedmioty.create(@param)        
       if ((il = params[:przedmiot][:ilosc].to_i) > 0)
         @przedmiot_arr = []
@@ -102,8 +92,30 @@ class PrzedmiotyController < ApplicationController
     redirect_to przedmioty_path
   end
 
+
+  def wybierz
+    
+    if @przedmiot = Przedmioty.where(id: params[:id]).first
+      unless session[:wybrane_przedmioty]
+        session[:wybrane_przedmioty] = []
+      end
+      unless session[:wybrane_przedmioty].include? @przedmiot.id
+        session[:wybrane_przedmioty] += [@przedmiot.id]
+      else
+        flash[:error] = 'nie mozesz ponownie dodac identycznego przedmiotu'  
+      end
+    else      
+      flash[:error] = 'nie znaleziono przedmiotu'
+    end
+    if params[:pathC]
+      #redirect_to_url(params[:path])
+      redirect_to controller: params[:pathC], action: params[:pathA], id: params[:pathI]
+    else
+      redirect_to action: :index      
+    end
+  end
   def stworz_tablice    
-    @menu_stan = [['zajety',1],['wypozyczalny',2],['utylizacja',3]]
+    @menu_stan = [["zajęty",1],["wypożyczalny",2],['utylizacja',3]]
 
     @menu_szafki = [['brak', 0]]
     Szafki.all.each {|f| @menu_szafki+=[[f.miejsce.to_s + "(" + f.numer.to_s + "," +")" , f.id]]}
@@ -131,11 +143,17 @@ class PrzedmiotyController < ApplicationController
   def dodaj_do_projektu_A
     blad = false
     
-    unless @projekt = Uzytkownicy.where(id: @uzytkownik_id).first.projekties.where(id: params[:id]).first
-      flash[:error] = "brak projektu"
-      blad = true
+    if @poziom_dostepu < 2
+      unless @projekt = Uzytkownicy.where(id: @uzytkownik_id).first.projekties.where(id: params[:id]).first
+        flash[:error] = "brak projektu"
+        blad = true
+      end
+    else
+      unless @projekt = Projekty.where(id: params[:id]).first
+        flash[:error] = "brak projektu"
+        blad = true
+      end
     end
- 
     if (@wybrane = Przedmioty.where(id: session[:wybrane_przedmioty])).size < 1
       flash[:error] = "brak wybranych przedmiotów"
       blad = true

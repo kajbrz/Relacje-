@@ -9,6 +9,7 @@ private #section
   def initialize
     super
     load "semafor.rb"
+    config.encoding = "utf-8"
   end
 
   def poziom_dostepu

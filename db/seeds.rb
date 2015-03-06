@@ -7,50 +7,56 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 #Tworzenie super_uzytkownika
-Uzytkownicy.delete_all
-Przedmioty.delete_all
-Projekty.delete_all
-ProjektyUzytkownicy.delete_all
-Szafki.delete_all
+#Uzytkownicy.delete_all
+#Przedmioty.delete_all
+#Projekty.delete_all
+#ProjektyUzytkownicy.delete_all
+#Szafki.delete_all
 
-Szafki.create!(
-  id: 1,
-  miejsce: 'nieznane',
-  numer: 0,
-  uzytkownicy_id: 0
-)
-if false
-Przedmioty.create!(
-  id: 1,
-  typ: 'elektronika',
-  nazwa: 'tranzystor',
-  model: 'BC308',
-  stan: 2,
-  uzytkownicy_id: 0,#0 brak przynaleznosci do zadnego uzytkownika
-  szafki_id: 0, #0 brak przynaleznosci do zadnej szafki
-  projekty_id: 0 #0 brak przynaleznosci do zadnego projektu
-)
+#NIE EDYTOWAĆ -> potrzebne do działania aplikacji
+unless (@sz = Szafki.where(id: 1).first)
+  Szafki.create!(
+    id: 1,
+    miejsce: 'nieznane',
+    numer: 0,
+    uzytkownicy_id: 0
+    )
+else
+  @sz.update_columns(
+    miejsce: 'nieznane',
+    numer: 0,
+    uzytkownicy_id: 0
+    )
 end
 @uzytkownik = Hash.new
+################ END #####################
 
-@uzytkownik[:nick] = "Synergia"   
-@uzytkownik[:email] = "synergia@synergia.pl"   
+#TUTAJ NADAJEMY HASŁO
 @uzytkownik[:haslo] = "Synergia"   
-@uzytkownik[:ostatnie_logowanie] = Time.zone.now   
-@uzytkownik[:poziom_dostepu] = "3" 
-@uzytkownik[:status_czlonka] = "SuperAdministrator"
-
-
-Uzytkownicy.create!(
-  id: 1,
-  nick: @uzytkownik[:nick],
-  email: @uzytkownik[:email],
-  haslo: @uzytkownik[:haslo],
-  status_czlonka: @uzytkownik[:status_czlonka],
-  ostatnie_logowanie: @uzytkownik[:ostatnie_logowanie],
-  poziom_dostepu: @uzytkownik[:poziom_dostepu]
-)
-
+############# NIE EDYTOWAĆ ###############
+unless (@uz = Uzytkownicy.where(id: 1).first)
+  Uzytkownicy.create!(
+    id: 1,
+    nick: "Synergia",
+    email: "synergia@synergia.pl",
+    haslo: @uzytkownik[:haslo],
+    status_czlonka: 'SuperAdministrator',
+    ostatnie_logowanie: Time.zone.now,
+    poziom_dostepu: 3
+  )
+else
+  @uz.update_columns(
+    nick: "Synergia",
+    email: "synergia@synergia.pl",
+    haslo: @uzytkownik[:haslo],
+    status_czlonka: 'SuperAdministrator',
+    ostatnie_logowanie: Time.zone.now,
+    poziom_dostepu: 3 
+    )
+  @uz.zakoduj_haslo
+  @uz.save
+end
+################ END #####################
 #Tworzenie domyślny przedmioties
 
 

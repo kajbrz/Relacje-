@@ -6,7 +6,7 @@
 <div class="opcje">
 <%= link_to 'wróć', projekty_path %> <br/>    
 <% if @edycja %>
-  <%= link_to 'usuń'  , projekty_destroy_path(id: @projekt.id), method: :delete %> <br/>  
+  <%= link_to 'usuń'  , projekty_destroy_path(id: @projekt.id), method: :delete, data: {confirm: "Na pewno?"} %> <br/>  
   <%= link_to "edytuj", projekty_edit_path(id: @projekt.id), method: :get   %><br/>
   <%= link_to "umieść w szafce", projekty_umiesc_w_szafce_path(id: @projekt.id), method: :post%><br/>
   <%= link_to "dodaj osobę", projekty_dodaj_osobe_path(id: @projekt.id), method: :post %><br/>
@@ -21,14 +21,13 @@
 <div class="opis">
   <div class="tabela">
     <% @projekt.uzytkownicies.each do |p| %>
-      <div class="folder">
-        <i>Nick <b><%= p.nick %></b></i><br/>
-        Funkcja 
-          <%= rola = @projekt.projekty_uzytkownicies.find_by(uzytkownicy_id: p).rola %> <br/>
+      <div class="ProUzy" >
+        <i>Nick: <b><%= p.nick %></b></i><br/>
+        Funkcja: <%= rola = @projekt.projekty_uzytkownicies.find_by(uzytkownicy_id: p).rola %> <br/>
           <% if @edycja %>
             <%= link_to "zmień", projekty_zmien_role_path(uzytkownik_id: p.id, projekt_id: @projekt.id), method: :post %>
           <% else %>
-            <%= rola %>
+            
           <% end %> 
           <% if @edycja %>
             <b><%= link_to "usuń", 
@@ -43,11 +42,22 @@ Przedmioty:
 <table>
 <% @projekt.przedmioties.each do |p| %>
   <tr>
+    <td><%= p.id %>
     <td><%= p.typ %>
     <td><%= p.nazwa %>
-    <td><%= p.model %>
-    <td><%= p.stan %>
-    <td><%= link_to 'zwróć', projekty_usun_przedmiot_path(id: p.id, projekt_id: @projekt.id), method: :post %>    
+    <td><%= p.model %> 
+    <% if p.stan == 0 || p.stan == 1 %>
+        <td title="zajęty"> Z
+      <% elsif p.stan == 2 %>
+        <td title="wypożyczalny"> W
+        <% if p.uzytkownicy || p.projekty %>
+          (z)
+        <% end %>
+      <% elsif p.stan == 3 %>
+        <td title="do utylizacji"> U
+      <% end %>
+    <td><%= link_to 'pokaż', przedmioty_show_path(id: p), method: :get %>    
+    <td><%= link_to 'zwróć', projekty_usun_przedmiot_path(id: p.id, projekt_id: @projekt.id), method: :post %>  
   <tr>       
 <% end %>
 </table>

@@ -6,9 +6,11 @@
 <% end %>
 </h1>
 <div class="opcje">
-  <br/><%= link_to 'wróć', szafki_path %>
+  <%= link_to 'wróć', szafki_path %>
   <br/><%= link_to 'edytuj', '/szafki/'+@szafka.id.to_s+'/edit' %>
-  <br/><%= link_to 'usuń', szafki_path(id: @szafka), method: :delete, data: {confirm: "Czy na pewno?"}%>
+  <% if @poziom_dostepu > 2 %>
+    <br/><%= link_to 'usuń', szafki_path(id: @szafka), method: :delete, data: {confirm: "Czy na pewno?"}%>
+  <% end %>
 </div>
 <div class="opis">
   <table style="text-align:left;">

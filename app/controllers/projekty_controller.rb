@@ -66,8 +66,9 @@ class ProjektyController < ApplicationController
           redirect_to projekty_path and return
         end
       end
-      @uzytkownik.projekties.create(params.require(:projekty).permit(:nazwa, :opis, :stan))
+      pr = @uzytkownik.projekties.create(params.require(:projekty).permit(:nazwa, :opis, :stan))
       flash[:notice] = "stworzono projekt"
+      redirect_to projekty_show_path(id: pr) and return
     else
       flash[:error] = "nie znaleziono użytkownika"
     end
@@ -77,6 +78,9 @@ class ProjektyController < ApplicationController
   def destroy
     if @projekt = Projekty.where(id: params[:id]).first
       if ((@projekt.uzytkownicies.where(id: @uzytkownik_id)) || (@poziom_dostepu > 1 ))
+        @uz = @projekt.uzytkownicies
+        ProjektyUzytkownicy.where(uzytkownicy_id: @uz, projekty_id: @projekt).delete_all
+        @projekt.przedmioties.update_all(projekty_id: 0)
         @projekt.delete
         flash[:notice] = "pomyślnie usunięto"
       else
@@ -209,13 +213,12 @@ class ProjektyController < ApplicationController
       flash[:error] = "brak projektu"
       blad = true
     end
-
-    if (@uzytkownik = Uzytkownicy.where(id: @uzytkownik_id).first.projekties.where(id: @projekt.id)) == nil
-      flash[:error] = "nie należysz do projektu"
-      blad = true
+    unless @poziom_dostepu > 1  #warunek sprawdzany tylko jeżeli użytkownik nie należy do projetku
+      if (Uzytkownicy.where(id: @uzytkownik_id).first.projekties.where(id: @projekt.id).first) == nil
+        flash[:error] = "nie należysz do projektu"
+        blad = true
+      end
     end
-
-
     if (@projekt.przedmioties.where(id: @przedmiot.id)).size < 1      
       flash[:error] = "brak przedmiotów"
       blad = true

@@ -1,10 +1,11 @@
-<%= form_for @przedmiot, url: przedmioty_edit_path(@przedmiot), method: :patch do |f|%>
-  <p><%= f.label :typ %> <%= f.text_field :typ %></p>
-  <p><%= f.label :nazwa %> <%= f.text_field :nazwa %></p>
-  <p><%= f.label :model %> <%= f.text_field :model %></p>
-  <p><%= f.label :stan %> <%= f.select :stan, @menu_stan %></p>
-  <p><%= f.label :uzytkownik %> <%= f.select :uzytkownicy_id, @menu_uzytkownicy %></p>
-  <p><%= f.label :projekt %> <%= f.select :projekty_id, @menu_projekty %></p>
-  <p><%= f.label :szafka %> <%= f.select :szafki_id, @menu_szafki %></p>
+<%= form_for @przedmiot, url: przedmioty_edit_path(id: @przedmiot), method: :patch do |f|%>
+  <p><%= f.label :typ %> <%= f.text_field :typ %> <br/>
+  <%= f.label :nazwa %> <%= f.text_field :nazwa %> <br/>
+  <%= f.label :model %> <%= f.text_field :model %> <br/>
+  <%= f.label :komentarz %> <%= f.text_field :komentarz %><br/> 
+  <%= f.label :stan %> <%= f.select :stan, @menu_stan %> <br/>
+  <%= f.label :uzytkownik %> <%= f.select :uzytkownicy_id, @menu_uzytkownicy %><br/> 
+  <%= f.label :projekt %> <%= f.select :projekty_id, @menu_projekty %> <br/>
+  <%= f.label :szafka %> <%= f.select :szafki_id, @menu_szafki %> </p>
   <%= f.submit :aktualizuj %> 
 <% end %>

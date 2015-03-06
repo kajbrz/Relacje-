@@ -33,6 +33,13 @@ div.opis i{
   float: left;
   width: 150px;
 }
+form textarea
+{
+  width: 800px;
+  height: 400px;
+  resize: none;
+}
+
 input.submit {
   color: #BCBAB6;
   background: #615720;  
@@ -101,7 +108,20 @@ div.folder
 {
   display: table-cell;
   float: left;
+  text-align: center;
   margin: 10px;
+  width: 100px;
+}
+
+div.ProUzy
+{
+  display: table-cell;
+  float: left;
+  border: solid 1px grey;
+  border-radius: 20px;
+  text-align: center;
+  margin: 10px;
+  width: 200px;
 }
 
 div.folder div.foto

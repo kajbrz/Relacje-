@@ -8,12 +8,14 @@
 <% end %>
 <table> 
   <tr>
+    <td>id
     <td>nazwa
     <td>stan
     <td>opis
   <tr> 
   <% @projekty.each do |p| %>
     <tr>
+      <td><%= p.id %>
       <td><%= p.nazwa %>
       <td><%= p.stan %>
       <% if p.opis.length > 30 %>

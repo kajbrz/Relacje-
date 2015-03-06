@@ -48,39 +48,6 @@ class SzafkiController < ApplicationController
   end
   
 
-  def zwroc_przedmioty
-    blad = false
-    unless @przedmiot = Przedmioty.where(id: params[:id]).first
-      flash[:error] = "nie znaleziono przedmiotu"
-      blad = true
-    end
-
-    if @przedmiot.uzytkownicy_id == 0
-      flash[:error] = "nie trzeba zwracać tego przedmiotu"
-      blad = true      
-    end
-
-    unless @przedmiot.uzytkownicy_id == @uzytkownik_id
-      flash[:error] = "nie trzeba zwracać tego przedmiotu"
-      blad = true      
-    end
-
-    unless blad
-      flash[:notice] = "pomyślnie zwrócono przedmiot"
-      @przedmiot.uzytkownicy_id = 0
-      @przedmiot.szafki_id = @przedmiot.szafka_pierwotna
-      @przedmiot.save
-    end
-
-
-    if @szafka = Szafki.where(id: params[:szafka_id]).first
-      redirect_to szafki_path(id: @szafka.id)
-    else
-      redirect_to szafki_path
-    end
-
-  end
-
   def update
     if @szafka = Szafki.where(id: params[:id]).first    
       if id = Sesja.sprawdz(session[:session_id])
@@ -145,6 +112,39 @@ class SzafkiController < ApplicationController
     
     @menu_projekty = [['brak', 0]]
     Projekty.all.each { |f| @menu_projekty+=[[f.nazwa, f.id]] }
+  end
+
+  def zwroc_przedmioty
+    blad = false
+    unless @przedmiot = Przedmioty.where(id: params[:id]).first
+      flash[:error] = "nie znaleziono przedmiotu"
+      blad = true
+    end
+
+    if @przedmiot.uzytkownicy_id == 0
+      flash[:error] = "nie trzeba zwracać tego przedmiotu"
+      blad = true      
+    end
+
+    unless @przedmiot.uzytkownicy_id == @uzytkownik_id
+      flash[:error] = "nie trzeba zwracać tego przedmiotu"
+      blad = true      
+    end
+
+    unless blad
+      flash[:notice] = "pomyślnie zwrócono przedmiot"
+      @przedmiot.uzytkownicy_id = 0
+      @przedmiot.szafki_id = @przedmiot.szafka_pierwotna
+      @przedmiot.save
+    end
+
+
+    if @szafka = Szafki.where(id: params[:szafka_id]).first
+      redirect_to szafki_path(id: @szafka.id)
+    else
+      redirect_to szafki_path
+    end
+
   end
 
   private

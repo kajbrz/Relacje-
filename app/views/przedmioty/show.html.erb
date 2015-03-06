@@ -1,8 +1,13 @@
 <h1> przedmiot #<%= @przedmiot.id %> </h1>
 <div class="opcje">
-  <%= link_to 'edytuj', @przedmiot.id.to_s + '/edit' %><br/>
-  <%= link_to 'usuń', przedmioty_path(@przedmiot), method: :delete, data: {confirm: "Na pewno?"} %> <br/>
-  <%= link_to 'idź do szafki', szafki_show_path(id: @przedmiot.szafki) %>
+	<% if @poziom_dostepu > 2 %>
+		<%= link_to 'edytuj', @przedmiot.id.to_s + '/edit' %><br/>
+		<%= link_to 'usuń', przedmioty_path(@przedmiot), method: :delete, data: {confirm: "Na pewno?"} %> <br/>
+	<% end %>
+	<%= link_to 'idź do szafki', szafki_show_path(id: @przedmiot.szafki) %> <br/>
+	<% if @pr = @przedmiot.projekty %>
+		<%= link_to 'idź do projektu', projekty_show_path(id: @pr) %>
+	<% end %>
 </div>
 <table style="text-align: left;">	
 	<tr><td style=" width: 100px"><p>typ: <td><b><%=@przedmiot.typ %></b></p> </tr>

@@ -130,7 +130,7 @@ Rails.application.routes.draw do
 
   get 'przedmioty/:id/edit', to: 'przedmioty#edit'
 
-  patch 'przedmioty/:id/edit', to: 'przedmioty#update'
+  patch 'przedmioty/edit', to: 'przedmioty#update'
 
   patch 'przedmioty/edit.:id', to: 'przedmioty#update'
 

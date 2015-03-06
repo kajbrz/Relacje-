@@ -2,7 +2,7 @@
 <h1><%= @uzytkownik.nick %> </h1>
 
 <div class="opcje">
-  <%= link_to "Idz do szafki", {controller: :szafki, action: :show, id: @uzytkownik.szafkis.first} %><br/>
+  <%= link_to "Idź do szafki", {controller: :szafki, action: :show, id: @uzytkownik.szafkis.first} %><br/>
   <%= link_to 'edytuj', action: :edit, id: @uzytkownik.id%>
 </div>
 <table>
