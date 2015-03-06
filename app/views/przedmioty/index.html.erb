@@ -18,6 +18,7 @@
 <%= form_tag :przedmioty_index, method: :get do %>
   <%= text_field_tag :szukaj, "szukaj", onfocus: "if(this.value == 'szukaj') { this.value = ''; }"%>
 <% end %>
+
 <% if @przedmioty %>
   <table>
     <tr>
@@ -58,3 +59,5 @@
 <% else %>
   <p> Brak Rekordów </p>
 <% end %>
+
+<%= will_paginate @przedmioty %>

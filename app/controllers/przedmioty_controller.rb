@@ -17,8 +17,7 @@ class PrzedmiotyController < ApplicationController
         @przedmioty = Przedmioty.group(:typ, :nazwa, :model)
       end
     end  
-
-    @strony = (@przedmioty.size / 4).floor
+    @przedmiotypaginate(:page => params[:page], :per_page => 50)
   end
 
   def show
