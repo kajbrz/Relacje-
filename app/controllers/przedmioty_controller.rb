@@ -14,10 +14,9 @@ class PrzedmiotyController < ApplicationController
       if params[:wybrane]
         @przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty])       
       else
-        @przedmioty = Przedmioty.all #group(:typ, :nazwa, :model)
+        @przedmioty = Przedmioty.paginate(:page => params[:page], :per_page => 50) #group(:typ, :nazwa, :model)
       end
     end  
-    @przedmioty.paginate(:page => params[:page], :per_page => 50)
   end
 
   def show
