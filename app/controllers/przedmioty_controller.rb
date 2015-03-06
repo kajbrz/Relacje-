@@ -12,7 +12,7 @@ class PrzedmiotyController < ApplicationController
       @przedmioty = Przedmioty.where(id: @przedmioty)
     else
       if params[:wybrane]
-        @przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty])       
+        @przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty]).paginate(:page => params[:page], :per_page => 50)       
       else
         @przedmioty = Przedmioty.paginate(:page => params[:page], :per_page => 50) #group(:typ, :nazwa, :model)
       end
