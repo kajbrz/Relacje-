@@ -19,5 +19,12 @@ class Przedmioty < ActiveRecord::Base
     if (self.szafka_pierwotna == nil)
       self.szafka_pierwotna = 1
     end
+
+    if (self.projekty_id == nil)
+      self.projekty_id = 0
+    end
+    if (self.uzytkownicy_id == nil)
+      self.uzytkownicy_id = 0
+    end
   end
 end

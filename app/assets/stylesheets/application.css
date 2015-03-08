@@ -71,6 +71,7 @@ div.wszystkie {
   width: 1000px;
   padding: 20px;
   margin: auto;
+  background: ;
   box-shadow: 10px 10px 5px #888888;
   border-radius: 20px;
   background: #BCBAB6 url("/assets/logo.png") no-repeat;
@@ -139,9 +140,9 @@ div.folder div.tekst
 
 a { outline: 0; }
 a:link {color: #615720; text-decoration: none; background-color: transparent; font-style: italic;  }
-a:visited { color: #615720; text-decoration: none; background-color: transparent; }
-a:hover { color: #615720; text-decoration: underline; background-color: transparent; }
-a:active { color: #484646; text-decoration: underline; background-color: transparent; } 
+a:visited { color: #615720; text-decoration: none; background-color: transparent }
+a:hover { color: #615720; text-decoration: underline; background-color: transparent }
+a:active { color: #484646; text-decoration: underline; background-color: transparent } 
 
 
 div.tytul a.tytul{

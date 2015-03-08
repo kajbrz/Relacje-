@@ -15,8 +15,11 @@
     <%= link_to "Zaszufladkuj", przedmioty_schowaj_path, method: :post %>
   <% end %>
 </div>
-<%= form_tag :przedmioty_index, method: :get do %>
+<%= form_tag :przedmioty_index, method: :get, style: 'float: left;' do %>
   <%= text_field_tag :szukaj, "szukaj", onfocus: "if(this.value == 'szukaj') { this.value = ''; }"%>
+<% end %>
+<%= form_tag przedmioty_grupuj_path, method: :get, style: 'float: right;' do %>
+  <%= submit_tag 'grupuj' %>
 <% end %>
 
 <% if @przedmioty %>
@@ -46,7 +49,7 @@
         <% end %>
         <td><%= link_to 'zobacz', action: :show, id: u %>
         <% unless (session[:wybrane_przedmioty].include? u.id  if session[:wybrane_przedmioty])%>
-          <td><%= link_to('wybierz', {action: :wybierz, id: u}, method: :post)%>
+          <td><%= link_to('wybierz', {action: :wybierz, id: u, params: params}, method: :post)%>
         <% end %>
       </tr>
     <% end %>

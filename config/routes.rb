@@ -14,6 +14,7 @@ Rails.application.routes.draw do
    
   get'uzytkownicy/lista'
 
+
   post 'uzytkownicy/pobierz'
 
   get 'uzytkownicy/zapomnialem'
@@ -103,6 +104,8 @@ Rails.application.routes.draw do
   get 'przedmioty/update'
 
   post 'przedmioty/create'
+
+  get 'przedmioty/grupuj'
 
   post 'przedmioty/dodaj_do_projektu'
 

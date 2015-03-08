@@ -9,7 +9,7 @@ class PrzedmiotyController < ApplicationController
       @przedmioty += Przedmioty.where('typ LIKE ?', "%#{params[:szukaj]}").pluck(:id)
       @przedmioty += Przedmioty.where('model LIKE ?', "%#{params[:szukaj]}").pluck(:id)
 
-      @przedmioty = Przedmioty.where(id: @przedmioty)
+      @przedmioty = Przedmioty.where(id: @przedmioty).paginate(:page => params[:page], :per_page => 50) #group(:typ, :nazwa, :model)
     else
       if params[:wybrane]
         @przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty]).paginate(:page => params[:page], :per_page => 50)       
@@ -17,6 +17,10 @@ class PrzedmiotyController < ApplicationController
         @przedmioty = Przedmioty.paginate(:page => params[:page], :per_page => 50) #group(:typ, :nazwa, :model)
       end
     end  
+
+    if (session[:grupuj] == true)
+      @przedmioty.group!(:typ, :nazwa, :model)
+    end
   end
 
   def show
@@ -92,7 +96,6 @@ class PrzedmiotyController < ApplicationController
 
 
   def wybierz
-    
     if @przedmiot = Przedmioty.where(id: params[:id]).first
       unless session[:wybrane_przedmioty]
         session[:wybrane_przedmioty] = []
@@ -109,7 +112,8 @@ class PrzedmiotyController < ApplicationController
       #redirect_to_url(params[:path])
       redirect_to controller: params[:pathC], action: params[:pathA], id: params[:pathI]
     else
-      redirect_to action: :index      
+      params[:id] = nil
+      redirect_to action: :index, params: params 
     end
   end
   def stworz_tablice    
@@ -138,6 +142,14 @@ class PrzedmiotyController < ApplicationController
     end
   end
 
+  def grupuj
+    if session[:grupuj] != true;
+      session[:grupuj] = true;
+    else
+      session[:grupuj] = false;
+    end
+    redirect_to action: :index
+  end
   def dodaj_do_projektu_A
     blad = false
     
@@ -189,7 +201,7 @@ class PrzedmiotyController < ApplicationController
 
     blad = false
     if (@przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty])).size < 1
-      flash[:error] +="nie zaznaczono żadnego przedmiotu"
+      flash[:error] += "nie zaznaczono żadnego przedmiotu"
       blad = true
     end
 
@@ -238,16 +250,18 @@ class PrzedmiotyController < ApplicationController
   end
 
   def schowaj_A
-
     blad = false
+
     if (@przedmioty = Przedmioty.where(id: session[:wybrane_przedmioty])).size < 1
       flash[:error] = "nie zaznaczono żadnego przedmiotu"
       blad = true
     end
 
-    if (@przedmioty = @przedmioty.where(stan: 2)).size < 1
-      flash[:error] = "wybranych przedmiotow nie mozna wypozyczać"
-      blad = true
+    if (@poziom_dostepu < 3)
+      if (@przedmioty = @przedmioty.where(stan: 2)).size < 1
+        flash[:error] = "wybranych przedmiotow nie mozna wypozyczać"
+        blad = true
+      end
     end
 
     if (@przedmioty = @przedmioty.where(uzytkownicy_id: 0)).size < 1
