@@ -226,11 +226,11 @@ class UzytkownicyController < ApplicationController
     unless params[:link]
       params[:link] = ""
     end
-    params[:link].slice!("kopie")
-    linkTemp = "kopie" + params[:link] + "/*"
+    params[:link].slice!("tmp/kopie")
+    linkTemp = "tmp/kopie" + params[:link] + "/*"
     flash[:notice] = "Link: " + linkTemp
     if (@listaFP = Dir.glob(linkTemp)).size == 0 
-      @listaFP = Dir.glob('kopie/*')
+      @listaFP = Dir.glob('tmp/kopie/*')
     end
     @listaFP.reverse!
     #@linkpowrot = File.expand_path("..", linkTemp)
@@ -274,7 +274,7 @@ class UzytkownicyController < ApplicationController
     case param
       when "przedmioty" 
         nazwa_pliku = Time.now.inspect.split
-        nazwa_pliku = "kopie/przedmioty/"+ nazwa_pliku[0]+ " " + nazwa_pliku[1].delete(":") + ".txt"
+        nazwa_pliku = "tmp/kopie/przedmioty/"+ nazwa_pliku[0]+ " " + nazwa_pliku[1].delete(":") + ".txt"
         dirname = File.dirname(nazwa_pliku)
         unless File.directory?(dirname)
          FileUtils.mkdir_p(dirname)
@@ -292,7 +292,7 @@ class UzytkownicyController < ApplicationController
         f.close
       when "projekty" 
         nazwa_pliku = Time.now.inspect.split
-        nazwa_pliku = "kopie/projekty/"+ nazwa_pliku[0]+ " " + nazwa_pliku[1].delete(":") + ".txt"
+        nazwa_pliku = "tmp/kopie/projekty/"+ nazwa_pliku[0]+ " " + nazwa_pliku[1].delete(":") + ".txt"
         dirname = File.dirname(nazwa_pliku)
         unless File.directory?(dirname)
          FileUtils.mkdir_p(dirname)
@@ -309,7 +309,7 @@ class UzytkownicyController < ApplicationController
         f.close
       when "uzytkownicy" 
         nazwa_pliku = Time.now.inspect.split
-        nazwa_pliku = "kopie/uzytkownicy/"+ nazwa_pliku[0]+ " " + nazwa_pliku[1].delete(":") + ".txt"
+        nazwa_pliku = "tmp/kopie/uzytkownicy/"+ nazwa_pliku[0]+ " " + nazwa_pliku[1].delete(":") + ".txt"
         dirname = File.dirname(nazwa_pliku)
         unless File.directory?(dirname)
          FileUtils.mkdir_p(dirname)
@@ -326,7 +326,7 @@ class UzytkownicyController < ApplicationController
         f.close
       when "cala"
         nazwa_pliku = Time.now.inspect.split
-        nazwa_pliku = "kopie/cala_baza/"+ nazwa_pliku[0]+ " " + nazwa_pliku[1].delete(":") + ".txt"
+        nazwa_pliku = "tmp/kopie/cala_baza/"+ nazwa_pliku[0]+ " " + nazwa_pliku[1].delete(":") + ".txt"
         dirname = File.dirname(nazwa_pliku)
         unless File.directory?(dirname)
          FileUtils.mkdir_p(dirname)
