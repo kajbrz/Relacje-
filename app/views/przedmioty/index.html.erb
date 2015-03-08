@@ -30,8 +30,9 @@
       <td>nazwa
       <td>model
       <td>stan
-      <% if sesja[:grupuj] == true %>
-        <td>ilość
+
+      <% if session[:grupuj] == true %>
+        <td> ilość
       <% end %>
     </tr>
     <% @przedmioty.each do |u| %>
@@ -53,9 +54,10 @@
         <td><%= link_to 'zobacz', action: :show, id: u %>
         <% unless (session[:wybrane_przedmioty].include? u.id  if session[:wybrane_przedmioty])%>
           <td><%= link_to('wybierz', {action: :wybierz, id: u, params: params}, method: :post)%>
-        <% end %>        
-        <% if sesja[:grupuj] == true %>
-          <td> <%= u.count %>
+        <% end %>
+
+        <% if session[:grupuj] == true %>
+          <td> <%= @przedmioty.count[[ u.typ, u.nazwa, u.model]] %>
         <% end %>
       </tr>
     <% end %>
