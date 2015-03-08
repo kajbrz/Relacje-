@@ -19,8 +19,8 @@ class PrzedmiotyController < ApplicationController
     end  
 
     if (session[:grupuj] == true)
-      #@przedmioty.group!(:typ, :nazwa, :model)
-      @przedmioty.group!(:id, :typ)
+      @przedmioty.select(:id, :typ, :nazwa, :model).group!(:typ, :nazwa, :model)
+      #@przedmioty.group!(:id, :typ)
     end
   end
 
