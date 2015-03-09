@@ -45,19 +45,21 @@
           <td title="zajęty"> Z
         <% elsif u.stan == 2 %>
           <td title="wypożyczalny"> W
-          <% if u.uzytkownicy || u.projekty %>
-            (z)
+          <% unless session[:grupuj] == true %>
+            <% if u.uzytkownicy || u.projekty %>
+              (z)
+            <% end %>
           <% end %>
         <% elsif u.stan == 3 %>
           <td title="do utylizacji"> U
         <% end %>
-        <td><%= link_to 'zobacz', action: :show, id: u %>
-        <% unless (session[:wybrane_przedmioty].include? u.id  if session[:wybrane_przedmioty])%>
-          <td><%= link_to('wybierz', {action: :wybierz, id: u, params: params}, method: :post)%>
-        <% end %>
-
-        <% if session[:grupuj] == true %>
-          <td> <%#= @przedmioty.count[[ u.typ, u.nazwa, u.model]] %>
+        <% unless session[:grupuj] == true %>
+          <td><%= link_to 'zobacz', action: :show, id: u %>
+          <% unless (session[:wybrane_przedmioty].include? u.id  if session[:wybrane_przedmioty])%>
+            <td><%= link_to('wybierz', {action: :wybierz, id: u, params: params}, method: :post)%>
+          <% end %>
+        <% else %>
+          <td> <%= @ilosc[[u.typ, u.nazwa, u.model]] %>
         <% end %>
       </tr>
     <% end %>
