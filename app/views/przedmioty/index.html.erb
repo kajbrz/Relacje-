@@ -59,7 +59,7 @@
             <td><%= link_to('wybierz', {action: :wybierz, id: u, params: params}, method: :post)%>
           <% end %>
         <% else %>
-          <td> <%= @ilosc[[u.typ, u.nazwa, u.model]] %>
+          <td> <%= @ilosc[[u.typ, u.nazwa, u.model, u.stan]] %>
         <% end %>
       </tr>
     <% end %>
